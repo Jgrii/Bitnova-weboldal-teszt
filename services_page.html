@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BitNova - Szolgáltatások</title>
+    <link rel="icon" href="images/bitnovalogo123.png" type="image/png">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <!-- CSÚSZKÁS TÉMAVÁLTÓ GOMB -->
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+        <input type="checkbox" id="themeSwitch" style="display: none;">
+        
+        <label for="themeSwitch" style="
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            gap: 10px;
+            background: rgba(255,255,255,0.9);
+            padding: 8px 15px;
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        ">
+            <span id="themeIcon" style="font-size: 18px;">🌙</span>
+            
+            <div style="
+                position: relative;
+                width: 50px;
+                height: 24px;
+                background: #ccc;
+                border-radius: 12px;
+                transition: background 0.3s ease;
+            " id="switchTrack">
+                <div style="
+                    position: absolute;
+                    top: 2px;
+                    left: 2px;
+                    width: 20px;
+                    height: 20px;
+                    background: white;
+                    border-radius: 50%;
+                    transition: transform 0.3s ease;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                " id="switchButton"></div>
+            </div>
+        </label>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <img width="220" height="auto" viewBox="0 0 400 100" src="images/bitnova logo.png">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Főoldal</a></li>
+                    <li><a href="about_page.html">Rólunk</a></li>
+                    <li><a href="services_page.html" class="active">Szolgáltatások</a></li>
+                    <li><a href="contact_page.html">Kapcsolat</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="hero">
+            <h1>Szolgáltatásaink</h1>
+            <p>Teljes körű informatikai megoldások vállalkozásoknak és magánszemélyeknek</p>
+        </div>
+
+        <div class="services-grid">
+            <article class="service-category">
+                <h3>🖥️ Rendszerüzemeltetés</h3>
+                <ul class="service-list">
+                    <li>IT infrastruktúra kiépítése és tervezése</li>
+                    <li>Szerver telepítés és konfigurálás</li>
+                    <li>Hálózati rendszerek kiépítése</li>
+                    <li>Rendszeres karbantartás és felügyelet</li>
+                    <li>Biztonsági mentések kezelése</li>
+                    <li>Vírusvédelem és biztonság</li>
+                    <li>Teljesítmény optimalizálás</li>
+                </ul>
+            </article>
+
+            <article class="service-category">
+                <h3>🔒 Hálózatbiztonság</h3>
+                <ul class="service-list">
+                    <li>Tűzfal telepítés és beállítás</li>
+                    <li>Behatolás-érzékelő rendszerek</li>
+                    <li>VPN kapcsolatok kiépítése</li>
+                    <li>Biztonsági audit és értékelés</li>
+                    <li>Adatvédelmi tanácsadás</li>
+                    <li>Incidenskezelés és helyreállítás</li>
+                    <li>Felhasználói képzések</li>
+                </ul>
+            </article>
+
+            <article class="service-category">
+                <h3>🌐 Webfejlesztés</h3>
+                <ul class="service-list">
+                    <li>Egyedi weboldal tervezés és fejlesztés</li>
+                    <li>AI-támogatott személyre szabás</li>
+                    <li>Reszponzív design (mobil-barát)</li>
+                    <li>E-commerce megoldások</li>
+                    <li>Tartalomkezelő rendszerek (CMS)</li>
+                    <li>Weboldal karbantartás és frissítés</li>
+                    <li>SEO optimalizálás</li>
+                </ul>
+            </article>
+
+            <article class="service-category">
+                <h3>🛠️ Támogatás</h3>
+                <ul class="service-list">
+                    <li>0-24 órás ügyfélszolgálat</li>
+                    <li>Helyszíni technikai támogatás</li>
+                    <li>Távoli segítségnyújtás</li>
+                    <li>SOS gyorsszolgálat</li>
+                    <li>Rendszerfelügyelet és monitoring</li>
+                    <li>Felhasználói képzések és oktatás</li>
+                    <li>Preventív karbantartás</li>
+                </ul>
+            </article>
+        </div>
+
+        <div class="emergency-contact">
+            <h3>🆘 Sürgős Esetekben</h3>
+            <div class="phone">+36 XX XXX XXXX</div>
+            <p>0-24 órás SOS szolgáltatás kritikus problémák esetén</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 BitNova IT Solutions. Minden jog fenntartva.</p>
+    </footer>
+
+    <script>
+        (function() {
+            const themeSwitch = document.getElementById('themeSwitch');
+            const themeIcon = document.getElementById('themeIcon');
+            const switchTrack = document.getElementById('switchTrack');
+            const switchButton = document.getElementById('switchButton');
+            
+            function applyTheme(isDark) {
+                console.log('Téma váltás:', isDark ? 'sötét' : 'világos');
+                
+                if (isDark) {
+                    // HÁTTÉR
+                    document.body.style.setProperty('background-color', '#1a1a1a', 'important');
+                    document.body.style.setProperty('background', '#1a1a1a', 'important');
+                    document.body.style.setProperty('color', '#e0e0e0', 'important');
+                    document.documentElement.style.setProperty('background-color', '#1a1a1a', 'important');
+                    document.documentElement.style.setProperty('background', '#1a1a1a', 'important');
+                    
+                    // MINDEN ELEM SZÖVEGSZÍNÉNEK ÁTÍRÁSA
+                    const allElements = document.querySelectorAll('*');
+                    allElements.forEach(element => {
+                        // Kihagyjuk a témaváltó gombot
+                        if (element.closest('#themeSwitch') || element.id === 'themeSwitch') return;
+                        
+                        // Szövegszín átírása
+                        element.style.setProperty('color', '#e0e0e0', 'important');
+                        
+                        // Háttérszín ellenőrzése és átírása
+                        const computedStyle = window.getComputedStyle(element);
+                        const bgColor = computedStyle.backgroundColor;
+                        
+                        if (bgColor === 'rgb(255, 255, 255)' || 
+                            bgColor === 'white' || 
+                            bgColor === 'rgba(255, 255, 255, 1)' ||
+                            bgColor.includes('255, 255, 255')) {
+                            element.style.setProperty('background-color', '#2d2d2d', 'important');
+                        }
+                    });
+                    
+                    // CSS osztályok
+                    document.body.classList.add('dark-mode');
+                    document.documentElement.classList.add('dark-mode');
+                    
+                    // Gomb
+                    themeIcon.textContent = '☀️';
+                    switchTrack.style.background = '#4CAF50';
+                    switchButton.style.transform = 'translateX(26px)';
+                    themeSwitch.checked = true;
+                    
+                } else {
+                    // VILÁGOS TÉMA
+                    document.body.style.setProperty('background-color', '#ffffff', 'important');
+                    document.body.style.setProperty('background', '#ffffff', 'important');
+                    document.body.style.setProperty('color', '#333333', 'important');
+                    document.documentElement.style.setProperty('background-color', '#ffffff', 'important');
+                    document.documentElement.style.setProperty('background', '#ffffff', 'important');
+                    
+                    // MINDEN ELEM VISSZAÁLLÍTÁSA
+                    const allElements = document.querySelectorAll('*');
+                    allElements.forEach(element => {
+                        // Kihagyjuk a témaváltó gombot
+                        if (element.closest('#themeSwitch') || element.id === 'themeSwitch') return;
+                        
+                        // Szövegszín visszaállítása
+                        element.style.removeProperty('color');
+                        element.style.removeProperty('background-color');
+                    });
+                    
+                    // CSS osztályok eltávolítása
+                    document.body.classList.remove('dark-mode');
+                    document.documentElement.classList.remove('dark-mode');
+                    
+                    // Gomb
+                    themeIcon.textContent = '🌙';
+                    switchTrack.style.background = '#ccc';
+                    switchButton.style.transform = 'translateX(0px)';
+                    themeSwitch.checked = false;
+                }
+                
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            }
+            
+            themeSwitch.addEventListener('change', function() {
+                applyTheme(this.checked);
+            });
+            
+            const savedTheme = localStorage.getItem('theme');
+            const isDark = savedTheme === 'dark';
+            applyTheme(isDark);
+        })();
+    </script>
+
+</body>
+</html>

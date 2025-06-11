@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BitNova - Rólunk</title>
+    <link rel="icon" href="images/bitnovalogo123.png" type="image/png">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <!-- CSÚSZKÁS TÉMAVÁLTÓ GOMB -->
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+        <input type="checkbox" id="themeSwitch" style="display: none;">
+        
+        <label for="themeSwitch" style="
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            gap: 10px;
+            background: rgba(255,255,255,0.9);
+            padding: 8px 15px;
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        ">
+            <span id="themeIcon" style="font-size: 18px;">🌙</span>
+            
+            <div style="
+                position: relative;
+                width: 50px;
+                height: 24px;
+                background: #ccc;
+                border-radius: 12px;
+                transition: background 0.3s ease;
+            " id="switchTrack">
+                <div style="
+                    position: absolute;
+                    top: 2px;
+                    left: 2px;
+                    width: 20px;
+                    height: 20px;
+                    background: white;
+                    border-radius: 50%;
+                    transition: transform 0.3s ease;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                " id="switchButton"></div>
+            </div>
+        </label>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <img width="220" height="auto" viewBox="0 0 400 100" src="images/bitnova logo.png">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Főoldal</a></li>
+                    <li><a href="about_page.html" class="active">Rólunk</a></li>
+                    <li><a href="services_page.html">Szolgáltatások</a></li>
+                    <li><a href="contact_page.html">Kapcsolat</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <article class="about-content">
+            <h2>Rólunk</h2>
+            <p>A BitNova egy fiatal, dinamikus informatikai csapat, amely 2024-ben alakult azzal a céllal, hogy megbízható és modern IT megoldásokat nyújtson kis- és középvállalatok, valamint magánszemélyek számára.</p>
+            
+            <p>Csapatunk tapasztalt szakemberekből áll, akik folyamatosan követik a legújabb technológiai trendeket és fejlesztéseket. Hiszünk abban, hogy az informatika nem csak technológia, hanem szolgáltatás is - ezért minden ügyfelünkkel személyes kapcsolatot alakítunk ki.</p>
+            
+            <p>Küldetésünk, hogy ügyfeleink informatikai problémáit gyorsan, hatékonyan és kedvező áron oldjuk meg, miközben hosszú távú partnerségeket építünk ki velük.</p>
+        </article>
+
+        <div class="values">
+            <div class="value-item">
+                <h3>🎯 Megbízhatóság</h3>
+                <p>Minden projektben a maximális minőségre törekszünk és betartjuk ígéreteinket.</p>
+            </div>
+            <div class="value-item">
+                <h3>⚡ Gyorsaság</h3>
+                <p>Gyors reagálású, hatékony munkavégzés és azonnali támogatás sürgős esetekben.</p>
+            </div>
+            <div class="value-item">
+                <h3>🤝 Közvetlen Kapcsolat</h3>
+                <p>Személyes megközelítés, érthető kommunikáció és rugalmas együttműködés.</p>
+            </div>
+            <div class="value-item">
+                <h3>💰 Kedvező Árak</h3>
+                <p>Versenyképes árazás és átlátható költségstruktúra minden szolgáltatásunkban.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 BitNova IT Solutions. Minden jog fenntartva.</p>
+    </footer>
+
+    <script>
+        (function() {
+            const themeSwitch = document.getElementById('themeSwitch');
+            const themeIcon = document.getElementById('themeIcon');
+            const switchTrack = document.getElementById('switchTrack');
+            const switchButton = document.getElementById('switchButton');
+            
+            function applyTheme(isDark) {
+                console.log('Téma váltás:', isDark ? 'sötét' : 'világos');
+                
+                if (isDark) {
+                    // HÁTTÉR
+                    document.body.style.setProperty('background-color', '#1a1a1a', 'important');
+                    document.body.style.setProperty('background', '#1a1a1a', 'important');
+                    document.body.style.setProperty('color', '#e0e0e0', 'important');
+                    document.documentElement.style.setProperty('background-color', '#1a1a1a', 'important');
+                    document.documentElement.style.setProperty('background', '#1a1a1a', 'important');
+                    
+                    // MINDEN ELEM SZÖVEGSZÍNÉNEK ÁTÍRÁSA
+                    const allElements = document.querySelectorAll('*');
+                    allElements.forEach(element => {
+                        // Kihagyjuk a témaváltó gombot
+                        if (element.closest('#themeSwitch') || element.id === 'themeSwitch') return;
+                        
+                        // Szövegszín átírása
+                        element.style.setProperty('color', '#e0e0e0', 'important');
+                        
+                        // Háttérszín ellenőrzése és átírása
+                        const computedStyle = window.getComputedStyle(element);
+                        const bgColor = computedStyle.backgroundColor;
+                        
+                        if (bgColor === 'rgb(255, 255, 255)' || 
+                            bgColor === 'white' || 
+                            bgColor === 'rgba(255, 255, 255, 1)' ||
+                            bgColor.includes('255, 255, 255')) {
+                            element.style.setProperty('background-color', '#2d2d2d', 'important');
+                        }
+                    });
+                    
+                    // CSS osztályok
+                    document.body.classList.add('dark-mode');
+                    document.documentElement.classList.add('dark-mode');
+                    
+                    // Gomb
+                    themeIcon.textContent = '☀️';
+                    switchTrack.style.background = '#4CAF50';
+                    switchButton.style.transform = 'translateX(26px)';
+                    themeSwitch.checked = true;
+                    
+                } else {
+                    // VILÁGOS TÉMA
+                    document.body.style.setProperty('background-color', '#ffffff', 'important');
+                    document.body.style.setProperty('background', '#ffffff', 'important');
+                    document.body.style.setProperty('color', '#333333', 'important');
+                    document.documentElement.style.setProperty('background-color', '#ffffff', 'important');
+                    document.documentElement.style.setProperty('background', '#ffffff', 'important');
+                    
+                    // MINDEN ELEM VISSZAÁLLÍTÁSA
+                    const allElements = document.querySelectorAll('*');
+                    allElements.forEach(element => {
+                        // Kihagyjuk a témaváltó gombot
+                        if (element.closest('#themeSwitch') || element.id === 'themeSwitch') return;
+                        
+                        // Szövegszín visszaállítása
+                        element.style.removeProperty('color');
+                        element.style.removeProperty('background-color');
+                    });
+                    
+                    // CSS osztályok eltávolítása
+                    document.body.classList.remove('dark-mode');
+                    document.documentElement.classList.remove('dark-mode');
+                    
+                    // Gomb
+                    themeIcon.textContent = '🌙';
+                    switchTrack.style.background = '#ccc';
+                    switchButton.style.transform = 'translateX(0px)';
+                    themeSwitch.checked = false;
+                }
+                
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            }
+            
+            themeSwitch.addEventListener('change', function() {
+                applyTheme(this.checked);
+            });
+            
+            const savedTheme = localStorage.getItem('theme');
+            const isDark = savedTheme === 'dark';
+            applyTheme(isDark);
+        })();
+    </script>
+
+</body>
+</html>
