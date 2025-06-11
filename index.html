@@ -8,45 +8,28 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <!-- CSÚSZKÁS TÉMAVÁLTÓ GOMB -->
-    <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
-        <input type="checkbox" id="themeSwitch" style="display: none;">
-        
-        <label for="themeSwitch" style="
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            gap: 10px;
-            background: rgba(255,255,255,0.9);
-            padding: 8px 15px;
-            border-radius: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        ">
-            <span id="themeIcon" style="font-size: 18px;">🌙</span>
-            
-            <div style="
-                position: relative;
-                width: 50px;
-                height: 24px;
-                background: #ccc;
-                border-radius: 12px;
-                transition: background 0.3s ease;
-            " id="switchTrack">
-                <div style="
-                    position: absolute;
-                    top: 2px;
-                    left: 2px;
-                    width: 20px;
-                    height: 20px;
-                    background: white;
-                    border-radius: 50%;
-                    transition: transform 0.3s ease;
-                    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-                " id="switchButton"></div>
+    <!-- MOBIL TÉMAVÁLTÓ GOMB -->
+    <div class="mobile-theme-toggle">
+        <input type="checkbox" id="mobileThemeSwitch" style="display: none;">
+        <label for="mobileThemeSwitch" class="mobile-theme-switch-label">
+            <span id="mobileThemeIcon">🌙</span>
+            <div class="mobile-switch-track" id="mobileSwitchTrack">
+                <div class="mobile-switch-button" id="mobileSwitchButton"></div>
             </div>
         </label>
+    </div>
+
+    <!-- MENÜ OVERLAY -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <!-- MOBIL MENÜ -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="index.html" class="active">Főoldal</a></li>
+            <li><a href="about_page.html">Rólunk</a></li>
+            <li><a href="services_page.html">Szolgáltatások</a></li>
+            <li><a href="contact_page.html">Kapcsolat</a></li>
+        </ul>
     </div>
 
     <header>
@@ -54,12 +37,31 @@
             <div class="logo">
                 <img width="220" height="auto" viewBox="0 0 400 100" src="images/bitnova logo.png">
             </div>
+            
+            <!-- HAMBURGER MENÜ -->
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <!-- ASZTALI MENÜ -->
             <nav>
                 <ul>
                     <li><a href="index.html" class="active">Főoldal</a></li>
                     <li><a href="about_page.html">Rólunk</a></li>
                     <li><a href="services_page.html">Szolgáltatások</a></li>
                     <li><a href="contact_page.html">Kapcsolat</a></li>
+                    <li class="theme-toggle-nav">
+                        <!-- TÉMAVÁLTÓ GOMB A MENÜBEN -->
+                        <input type="checkbox" id="themeSwitch" style="display: none;">
+                        <label for="themeSwitch" class="theme-switch-label">
+                            <span id="themeIcon">🌙</span>
+                            <div class="switch-track" id="switchTrack">
+                                <div class="switch-button" id="switchButton"></div>
+                            </div>
+                        </label>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -103,11 +105,79 @@
     </footer>
 
     <script>
+        // HAMBURGER MENÜ KEZELÉS
+        (function() {
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuOverlay = document.getElementById('menuOverlay');
+            
+            function toggleMenu() {
+                hamburger.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+                menuOverlay.classList.toggle('active');
+                
+                // Body scroll letiltása/engedélyezése
+                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+            }
+            
+            function closeMenu() {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            hamburger.addEventListener('click', toggleMenu);
+            menuOverlay.addEventListener('click', closeMenu);
+            
+            // Menü bezárása link kattintáskor
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+            
+            // ESC billentyű kezelés
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                    closeMenu();
+                }
+            });
+        })();
+
+        // TÉMAVÁLTÓ KEZELÉS - ASZTALI ÉS MOBIL
         (function() {
             const themeSwitch = document.getElementById('themeSwitch');
+            const mobileThemeSwitch = document.getElementById('mobileThemeSwitch');
             const themeIcon = document.getElementById('themeIcon');
+            const mobileThemeIcon = document.getElementById('mobileThemeIcon');
             const switchTrack = document.getElementById('switchTrack');
+            const mobileSwitchTrack = document.getElementById('mobileSwitchTrack');
             const switchButton = document.getElementById('switchButton');
+            const mobileSwitchButton = document.getElementById('mobileSwitchButton');
+            
+            // Memóriában tároljuk a téma beállítást (localStorage helyett)
+            let currentTheme = 'light';
+            
+            function saveTheme(theme) {
+                currentTheme = theme;
+                // Próbáljuk meg localStorage-ba menteni, ha elérhető
+                try {
+                    localStorage.setItem('theme', theme);
+                } catch (e) {
+                    // Ha nem elérhető localStorage, csak memóriában tartjuk
+                    console.log('localStorage nem elérhető, memóriában tárolva');
+                }
+            }
+            
+            function loadTheme() {
+                try {
+                    const saved = localStorage.getItem('theme');
+                    return saved || 'light';
+                } catch (e) {
+                    // Ha localStorage nem elérhető, visszaadjuk az alapértelmezett világos témát
+                    return 'light';
+                }
+            }
             
             function applyTheme(isDark) {
                 console.log('Téma váltás:', isDark ? 'sötét' : 'világos');
@@ -123,8 +193,11 @@
                     // MINDEN ELEM SZÖVEGSZÍNÉNEK ÁTÍRÁSA
                     const allElements = document.querySelectorAll('*');
                     allElements.forEach(element => {
-                        // Kihagyjuk a témaváltó gombot
-                        if (element.closest('#themeSwitch') || element.id === 'themeSwitch') return;
+                        // Kihagyjuk a témaváltó gombokat
+                        if (element.closest('.theme-toggle-nav') || 
+                            element.closest('.mobile-theme-toggle') || 
+                            element.classList.contains('theme-toggle-nav') ||
+                            element.classList.contains('mobile-theme-toggle')) return;
                         
                         // Szövegszín átírása
                         element.style.setProperty('color', '#e0e0e0', 'important');
@@ -145,11 +218,18 @@
                     document.body.classList.add('dark-mode');
                     document.documentElement.classList.add('dark-mode');
                     
-                    // Gomb
-                    themeIcon.textContent = '☀️';
-                    switchTrack.style.background = '#4CAF50';
-                    switchButton.style.transform = 'translateX(26px)';
-                    themeSwitch.checked = true;
+                    // Gombok frissítése
+                    if (themeIcon) themeIcon.textContent = '☀️';
+                    if (mobileThemeIcon) mobileThemeIcon.textContent = '☀️';
+                    
+                    if (switchTrack) switchTrack.style.background = '#4CAF50';
+                    if (mobileSwitchTrack) mobileSwitchTrack.style.background = '#4CAF50';
+                    
+                    if (switchButton) switchButton.style.transform = 'translateX(20px)';
+                    if (mobileSwitchButton) mobileSwitchButton.style.transform = 'translateX(18px)';
+                    
+                    if (themeSwitch) themeSwitch.checked = true;
+                    if (mobileThemeSwitch) mobileThemeSwitch.checked = true;
                     
                 } else {
                     // VILÁGOS TÉMA
@@ -162,8 +242,11 @@
                     // MINDEN ELEM VISSZAÁLLÍTÁSA
                     const allElements = document.querySelectorAll('*');
                     allElements.forEach(element => {
-                        // Kihagyjuk a témaváltó gombot
-                        if (element.closest('#themeSwitch') || element.id === 'themeSwitch') return;
+                        // Kihagyjuk a témaváltó gombokat
+                        if (element.closest('.theme-toggle-nav') || 
+                            element.closest('.mobile-theme-toggle') || 
+                            element.classList.contains('theme-toggle-nav') ||
+                            element.classList.contains('mobile-theme-toggle')) return;
                         
                         // Szövegszín visszaállítása
                         element.style.removeProperty('color');
@@ -174,21 +257,38 @@
                     document.body.classList.remove('dark-mode');
                     document.documentElement.classList.remove('dark-mode');
                     
-                    // Gomb
-                    themeIcon.textContent = '🌙';
-                    switchTrack.style.background = '#ccc';
-                    switchButton.style.transform = 'translateX(0px)';
-                    themeSwitch.checked = false;
+                    // Gombok frissítése
+                    if (themeIcon) themeIcon.textContent = '🌙';
+                    if (mobileThemeIcon) mobileThemeIcon.textContent = '🌙';
+                    
+                    if (switchTrack) switchTrack.style.background = '#ccc';
+                    if (mobileSwitchTrack) mobileSwitchTrack.style.background = '#ccc';
+                    
+                    if (switchButton) switchButton.style.transform = 'translateX(0px)';
+                    if (mobileSwitchButton) mobileSwitchButton.style.transform = 'translateX(0px)';
+                    
+                    if (themeSwitch) themeSwitch.checked = false;
+                    if (mobileThemeSwitch) mobileThemeSwitch.checked = false;
                 }
                 
-                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                saveTheme(isDark ? 'dark' : 'light');
             }
             
-            themeSwitch.addEventListener('change', function() {
-                applyTheme(this.checked);
-            });
+            // Event listenerek
+            if (themeSwitch) {
+                themeSwitch.addEventListener('change', function() {
+                    applyTheme(this.checked);
+                });
+            }
             
-            const savedTheme = localStorage.getItem('theme');
+            if (mobileThemeSwitch) {
+                mobileThemeSwitch.addEventListener('change', function() {
+                    applyTheme(this.checked);
+                });
+            }
+            
+            // Téma betöltése
+            const savedTheme = loadTheme();
             const isDark = savedTheme === 'dark';
             applyTheme(isDark);
         })();
