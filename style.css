@@ -1009,3 +1009,153 @@ a, button, input, textarea, select {
     position: relative;
     z-index: 995;
 }
+
+
+
+
+/* SÖTÉT TÉMA JAVÍTÁSOK - add hozzá a style.css végéhez */
+
+/* FŐCÍMEK ÉS CÍMEK - világosabb színek sötét témában */
+.dark-mode .hero h1,
+.dark-mode h1 {
+    color: #6ba3f5 !important; /* Világos kék #142b72 helyett */
+}
+
+.dark-mode h2 {
+    color: #b8a7e8 !important; /* Világos lila */
+}
+
+.dark-mode h3 {
+    color: #f0e68c !important; /* Világos sárga */
+}
+
+/* FEATURE KÁRTYÁK CÍMEI */
+.dark-mode .feature-card h3 {
+    color: #8fb4f7 !important; /* Világos kék */
+}
+
+.dark-mode .service-category h3 {
+    color: #8fb4f7 !important; /* Világos kék */
+}
+
+.dark-mode .value-item h3 {
+    color: #8fb4f7 !important; /* Világos kék */
+}
+
+.dark-mode .about-content h2 {
+    color: #8fb4f7 !important; /* Világos kék */
+}
+
+/* SZÖVEGEK ÉS BEKEZDÉSEK */
+.dark-mode .hero p,
+.dark-mode .feature-card p,
+.dark-mode .about-content p,
+.dark-mode .service-list li {
+    color: #b0b0b0 !important; /* Világosszürke #666 helyett */
+}
+
+/* FORM CÍMKÉK */
+.dark-mode .form-group label {
+    color: #8fb4f7 !important; /* Világos kék */
+}
+
+/* MODAL CÍMEK */
+.dark-mode .modal-title {
+    color: #8fb4f7 !important; /* Világos kék */
+}
+
+.dark-mode .modal-details h4 {
+    color: #8fb4f7 !important; /* Világos kék */
+}
+
+.dark-mode .modal-details p {
+    color: #b0b0b0 !important; /* Világosszürke */
+}
+
+/* STÁTUSZ ÜZENETEK - jobb láthatóság */
+.dark-mode .status-success {
+    background: #1e4d32 !important; /* Sötétzöld háttér */
+    color: #51cf66 !important; /* Világoszöld szöveg */
+    border-color: #2d5a3d !important;
+}
+
+.dark-mode .status-error {
+    background: #4d1e1e !important; /* Sötétpiros háttér */
+    color: #ff6b6b !important; /* Világospiros szöveg */
+    border-color: #5a2d2d !important;
+}
+
+.dark-mode .status-loading {
+    background: #1e3a4d !important; /* Sötétkék háttér */
+    color: #4fc3f7 !important; /* Világoskék szöveg */
+    border-color: #2d4a5a !important;
+}
+
+/* EMERGENCY CONTACT - jobb kontraszt */
+.dark-mode .emergency-contact {
+    background: linear-gradient(135deg, #c62828, #b71c1c) !important;
+}
+
+.dark-mode .emergency-contact h3,
+.dark-mode .emergency-contact .phone,
+.dark-mode .emergency-contact p {
+    color: #ffffff !important; /* Fehér szöveg a jobb olvashatóságért */
+}
+
+/* LINKEK - aktív állapot */
+.dark-mode nav a.active {
+    color: #4CAF50 !important; /* Zöld aktív link */
+}
+
+.dark-mode nav a:hover {
+    color: #66BB6A !important; /* Világosabb zöld hover */
+}
+
+/* MOBIL MENÜ LINKEK */
+.dark-mode .mobile-menu a.active {
+    color: #4CAF50 !important;
+}
+
+.dark-mode .mobile-menu a:hover {
+    color: #66BB6A !important;
+}
+
+/* ÁLTALÁNOS SZABÁLY - minden inline style színhez */
+.dark-mode [style*="color:#142b72"] {
+    color: #6ba3f5 !important;
+}
+
+.dark-mode [style*="color:#997ae1"] {
+    color: #b8a7e8 !important;
+}
+
+.dark-mode [style*="color:#e0ca64"] {
+    color: #f0e68c !important;
+}
+
+.dark-mode [style*="color:#666"] {
+    color: #b0b0b0 !important;
+}
+
+/* PLACEHOLDER SZÖVEGEK */
+.dark-mode input::placeholder,
+.dark-mode textarea::placeholder {
+    color: #888 !important;
+}
+
+/* INPUT MEZŐK FÓKUSZ */
+.dark-mode .form-group input:focus,
+.dark-mode .form-group textarea:focus,
+.dark-mode .form-group select:focus {
+    border-color: #4CAF50 !important;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2) !important;
+}
+
+/* BORDER SZÍNEK JAVÍTÁSA */
+.dark-mode .feature-card {
+    border-left-color: #b8a7e8 !important; /* Világos lila border */
+}
+
+.dark-mode .service-category h3 {
+    border-bottom-color: #b8a7e8 !important; /* Világos lila border */
+}
