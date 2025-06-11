@@ -8,45 +8,28 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <!-- CSÚSZKÁS TÉMAVÁLTÓ GOMB -->
-    <div style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
-        <input type="checkbox" id="themeSwitch" style="display: none;">
-        
-        <label for="themeSwitch" style="
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            gap: 10px;
-            background: rgba(255,255,255,0.9);
-            padding: 8px 15px;
-            border-radius: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        ">
-            <span id="themeIcon" style="font-size: 18px;">🌙</span>
-            
-            <div style="
-                position: relative;
-                width: 50px;
-                height: 24px;
-                background: #ccc;
-                border-radius: 12px;
-                transition: background 0.3s ease;
-            " id="switchTrack">
-                <div style="
-                    position: absolute;
-                    top: 2px;
-                    left: 2px;
-                    width: 20px;
-                    height: 20px;
-                    background: white;
-                    border-radius: 50%;
-                    transition: transform 0.3s ease;
-                    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-                " id="switchButton"></div>
+    <!-- MOBIL TÉMAVÁLTÓ GOMB -->
+    <div class="mobile-theme-toggle">
+        <input type="checkbox" id="mobileThemeSwitch" style="display: none;">
+        <label for="mobileThemeSwitch" class="mobile-theme-switch-label">
+            <span id="mobileThemeIcon">🌙</span>
+            <div class="mobile-switch-track" id="mobileSwitchTrack">
+                <div class="mobile-switch-button" id="mobileSwitchButton"></div>
             </div>
         </label>
+    </div>
+
+    <!-- MENÜ OVERLAY -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <!-- MOBIL MENÜ -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="index.html">Főoldal</a></li>
+            <li><a href="about_page.html">Rólunk</a></li>
+            <li><a href="services_page.html"  class="active">Szolgáltatások</a></li>
+            <li><a href="contact_page.html">Kapcsolat</a></li>
+        </ul>
     </div>
 
     <header>
@@ -54,12 +37,31 @@
             <div class="logo">
                 <img width="220" height="auto" viewBox="0 0 400 100" src="images/bitnova logo.png">
             </div>
+            
+            <!-- HAMBURGER MENÜ -->
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <!-- ASZTALI MENÜ -->
             <nav>
                 <ul>
                     <li><a href="index.html">Főoldal</a></li>
                     <li><a href="about_page.html">Rólunk</a></li>
                     <li><a href="services_page.html" class="active">Szolgáltatások</a></li>
                     <li><a href="contact_page.html">Kapcsolat</a></li>
+                    <li class="theme-toggle-nav">
+                        <!-- TÉMAVÁLTÓ GOMB A MENÜBEN -->
+                        <input type="checkbox" id="themeSwitch" style="display: none;">
+                        <label for="themeSwitch" class="theme-switch-label">
+                            <span id="themeIcon">🌙</span>
+                            <div class="switch-track" id="switchTrack">
+                                <div class="switch-button" id="switchButton"></div>
+                            </div>
+                        </label>
+                    </li>
                 </ul>
             </nav>
         </div>
