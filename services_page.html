@@ -139,150 +139,159 @@
     </footer>
 
     <script>
-        // HIBAKERESÉS - ellenőrizzük a konzolt
-        console.log('JavaScript betöltve');
-
-        // DOM betöltés várása
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM betöltve');
-            
-            try {
-                // HAMBURGER MENÜ KEZELÉS
-                const hamburger = document.getElementById('hamburger');
-                const mobileMenu = document.getElementById('mobileMenu');
-                const menuOverlay = document.getElementById('menuOverlay');
+        // TÉMAVÁLTÓ KEZELÉS - JAVÍTOTT VERZIÓ LOCALSTORAGE-SZEL
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM betöltve');
+    
+    try {
+        // HAMBURGER MENÜ KEZELÉS (ugyanaz marad)
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+        
+        // OVERLAY ELREJTÉSE ALAPÉRTELMEZETTEN
+        if (menuOverlay) {
+            menuOverlay.style.display = 'none';
+            menuOverlay.style.visibility = 'hidden';
+            menuOverlay.style.opacity = '0';
+            menuOverlay.style.pointerEvents = 'none';
+        }
+        
+        if (hamburger && mobileMenu && menuOverlay) {
+            function toggleMenu() {
+                console.log('Menü váltás');
+                const isActive = mobileMenu.classList.contains('active');
                 
-                console.log('Hamburger elem:', hamburger);
-                console.log('Mobil menü elem:', mobileMenu);
-                console.log('Overlay elem:', menuOverlay);
+                hamburger.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+                menuOverlay.classList.toggle('active');
                 
-                // OVERLAY ELREJTÉSE ALAPÉRTELMEZETTEN
-                if (menuOverlay) {
+                if (!isActive) {
+                    menuOverlay.style.display = 'block';
+                    menuOverlay.style.visibility = 'visible';
+                    menuOverlay.style.opacity = '1';
+                    menuOverlay.style.pointerEvents = 'auto';
+                    document.body.style.overflow = 'hidden';
+                } else {
                     menuOverlay.style.display = 'none';
                     menuOverlay.style.visibility = 'hidden';
                     menuOverlay.style.opacity = '0';
                     menuOverlay.style.pointerEvents = 'none';
+                    document.body.style.overflow = '';
                 }
-                
-                if (hamburger && mobileMenu && menuOverlay) {
-                    function toggleMenu() {
-                        console.log('Menü váltás');
-                        const isActive = mobileMenu.classList.contains('active');
-                        
-                        hamburger.classList.toggle('active');
-                        mobileMenu.classList.toggle('active');
-                        menuOverlay.classList.toggle('active');
-                        
-                        // Overlay megjelenítés/elrejtés
-                        if (!isActive) {
-                            // Menü megnyitása
-                            menuOverlay.style.display = 'block';
-                            menuOverlay.style.visibility = 'visible';
-                            menuOverlay.style.opacity = '1';
-                            menuOverlay.style.pointerEvents = 'auto';
-                            document.body.style.overflow = 'hidden';
-                        } else {
-                            // Menü bezárása
-                            menuOverlay.style.display = 'none';
-                            menuOverlay.style.visibility = 'hidden';
-                            menuOverlay.style.opacity = '0';
-                            menuOverlay.style.pointerEvents = 'none';
-                            document.body.style.overflow = '';
-                        }
-                    }
-                    
-                    function closeMenu() {
-                        console.log('Menü bezárás');
-                        hamburger.classList.remove('active');
-                        mobileMenu.classList.remove('active');
-                        menuOverlay.classList.remove('active');
-                        
-                        // Overlay elrejtése
-                        menuOverlay.style.display = 'none';
-                        menuOverlay.style.visibility = 'hidden';
-                        menuOverlay.style.opacity = '0';
-                        menuOverlay.style.pointerEvents = 'none';
-                        document.body.style.overflow = '';
-                    }
-                    
-                    hamburger.addEventListener('click', function(e) {
-                        console.log('Hamburger kattintva!');
-                        e.preventDefault();
-                        e.stopPropagation();
-                        toggleMenu();
-                    });
-                    
-                    menuOverlay.addEventListener('click', function(e) {
-                        console.log('Overlay kattintva - menü bezárása');
-                        closeMenu();
-                    });
-                    
-                    // Menü bezárása link kattintáskor
-                    const mobileLinks = mobileMenu.querySelectorAll('a');
-                    mobileLinks.forEach(link => {
-                        link.addEventListener('click', closeMenu);
-                    });
-                    
-                    // ESC billentyű kezelés
-                    document.addEventListener('keydown', function(e) {
-                        if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
-                            closeMenu();
-                        }
-                    });
-                } else {
-                    console.error('Hamburger menü elemek nem találhatók!');
-                }
-
-                // TÉMAVÁLTÓ KEZELÉS - EGYSZERŰSÍTETT VERZIÓ
-                const themeSwitch = document.getElementById('themeSwitch');
-                const mobileThemeSwitch = document.getElementById('mobileThemeSwitch');
-                
-                if (themeSwitch) {
-                    themeSwitch.addEventListener('change', function() {
-                        console.log('Témaváltó kattintva (desktop)');
-                        toggleTheme(this.checked);
-                    });
-                }
-                
-                if (mobileThemeSwitch) {
-                    mobileThemeSwitch.addEventListener('change', function() {
-                        console.log('Témaváltó kattintva (mobile)');
-                        toggleTheme(this.checked);
-                    });
-                }
-                
-                function toggleTheme(isDark) {
-                    console.log('Téma váltás:', isDark ? 'sötét' : 'világos');
-                    
-                    if (isDark) {
-                        document.body.classList.add('dark-mode');
-                        document.documentElement.classList.add('dark-mode');
-                    } else {
-                        document.body.classList.remove('dark-mode');
-                        document.documentElement.classList.remove('dark-mode');
-                    }
-                    
-                    // Ikonok frissítése
-                    const themeIcon = document.getElementById('themeIcon');
-                    const mobileThemeIcon = document.getElementById('mobileThemeIcon');
-                    
-                    if (themeIcon) themeIcon.textContent = isDark ? '☀️' : '🌙';
-                    if (mobileThemeIcon) mobileThemeIcon.textContent = isDark ? '☀️' : '🌙';
-                    
-                    // Kapcsolók szinkronizálása
-                    if (themeSwitch) themeSwitch.checked = isDark;
-                    if (mobileThemeSwitch) mobileThemeSwitch.checked = isDark;
-                }
-
-            } catch (error) {
-                console.error('JavaScript hiba:', error);
             }
-        });
+            
+            function closeMenu() {
+                console.log('Menü bezárás');
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                
+                menuOverlay.style.display = 'none';
+                menuOverlay.style.visibility = 'hidden';
+                menuOverlay.style.opacity = '0';
+                menuOverlay.style.pointerEvents = 'none';
+                document.body.style.overflow = '';
+            }
+            
+            hamburger.addEventListener('click', function(e) {
+                console.log('Hamburger kattintva!');
+                e.preventDefault();
+                e.stopPropagation();
+                toggleMenu();
+            });
+            
+            menuOverlay.addEventListener('click', function(e) {
+                console.log('Overlay kattintva - menü bezárása');
+                closeMenu();
+            });
+            
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                    closeMenu();
+                }
+            });
+        }
 
-        // Általános kattintás teszt
-        document.addEventListener('click', function(e) {
-            console.log('Kattintás esemény:', e.target);
-        });
+        // TÉMAVÁLTÓ KEZELÉS - JAVÍTOTT VERZIÓ
+        const themeSwitch = document.getElementById('themeSwitch');
+        const mobileThemeSwitch = document.getElementById('mobileThemeSwitch');
+        
+        // TÉMA BETÖLTÉSE LOCALSTORAGE-ból
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('bitnovaTheme');
+            const isDark = savedTheme === 'dark';
+            
+            console.log('Mentett téma betöltése:', savedTheme);
+            
+            // Téma alkalmazása
+            applyTheme(isDark);
+            
+            // Kapcsolók beállítása
+            if (themeSwitch) themeSwitch.checked = isDark;
+            if (mobileThemeSwitch) mobileThemeSwitch.checked = isDark;
+        }
+        
+        // TÉMA ALKALMAZÁSA
+        function applyTheme(isDark) {
+            if (isDark) {
+                document.body.classList.add('dark-mode');
+                document.documentElement.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.documentElement.classList.remove('dark-mode');
+            }
+            
+            // Ikonok frissítése
+            const themeIcon = document.getElementById('themeIcon');
+            const mobileThemeIcon = document.getElementById('mobileThemeIcon');
+            
+            if (themeIcon) themeIcon.textContent = isDark ? '☀️' : '🌙';
+            if (mobileThemeIcon) mobileThemeIcon.textContent = isDark ? '☀️' : '🌙';
+        }
+        
+        // TÉMA VÁLTÁS ÉS MENTÉS
+        function toggleTheme(isDark) {
+            console.log('Téma váltás:', isDark ? 'sötét' : 'világos');
+            
+            // Téma mentése localStorage-ba
+            localStorage.setItem('bitnovaTheme', isDark ? 'dark' : 'light');
+            
+            // Téma alkalmazása
+            applyTheme(isDark);
+            
+            // Kapcsolók szinkronizálása
+            if (themeSwitch) themeSwitch.checked = isDark;
+            if (mobileThemeSwitch) mobileThemeSwitch.checked = isDark;
+        }
+        
+        // ESEMÉNYKEZELŐK
+        if (themeSwitch) {
+            themeSwitch.addEventListener('change', function() {
+                console.log('Témaváltó kattintva (desktop)');
+                toggleTheme(this.checked);
+            });
+        }
+        
+        if (mobileThemeSwitch) {
+            mobileThemeSwitch.addEventListener('change', function() {
+                console.log('Témaváltó kattintva (mobile)');
+                toggleTheme(this.checked);
+            });
+        }
+        
+        // TÉMA BETÖLTÉSE AZ OLDAL BETÖLTÉSEKOR
+        loadTheme();
+
+    } catch (error) {
+        console.error('JavaScript hiba:', error);
+    }
+});
     </script>
 
 </body>
