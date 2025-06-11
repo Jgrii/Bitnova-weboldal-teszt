@@ -122,15 +122,39 @@
                 console.log('Mobil menü elem:', mobileMenu);
                 console.log('Overlay elem:', menuOverlay);
                 
+                // OVERLAY ELREJTÉSE ALAPÉRTELMEZETTEN
+                if (menuOverlay) {
+                    menuOverlay.style.display = 'none';
+                    menuOverlay.style.visibility = 'hidden';
+                    menuOverlay.style.opacity = '0';
+                    menuOverlay.style.pointerEvents = 'none';
+                }
+                
                 if (hamburger && mobileMenu && menuOverlay) {
                     function toggleMenu() {
                         console.log('Menü váltás');
+                        const isActive = mobileMenu.classList.contains('active');
+                        
                         hamburger.classList.toggle('active');
                         mobileMenu.classList.toggle('active');
                         menuOverlay.classList.toggle('active');
                         
-                        // Body scroll letiltása/engedélyezése
-                        document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+                        // Overlay megjelenítés/elrejtés
+                        if (!isActive) {
+                            // Menü megnyitása
+                            menuOverlay.style.display = 'block';
+                            menuOverlay.style.visibility = 'visible';
+                            menuOverlay.style.opacity = '1';
+                            menuOverlay.style.pointerEvents = 'auto';
+                            document.body.style.overflow = 'hidden';
+                        } else {
+                            // Menü bezárása
+                            menuOverlay.style.display = 'none';
+                            menuOverlay.style.visibility = 'hidden';
+                            menuOverlay.style.opacity = '0';
+                            menuOverlay.style.pointerEvents = 'none';
+                            document.body.style.overflow = '';
+                        }
                     }
                     
                     function closeMenu() {
@@ -138,6 +162,12 @@
                         hamburger.classList.remove('active');
                         mobileMenu.classList.remove('active');
                         menuOverlay.classList.remove('active');
+                        
+                        // Overlay elrejtése
+                        menuOverlay.style.display = 'none';
+                        menuOverlay.style.visibility = 'hidden';
+                        menuOverlay.style.opacity = '0';
+                        menuOverlay.style.pointerEvents = 'none';
                         document.body.style.overflow = '';
                     }
                     
@@ -148,7 +178,10 @@
                         toggleMenu();
                     });
                     
-                    menuOverlay.addEventListener('click', closeMenu);
+                    menuOverlay.addEventListener('click', function(e) {
+                        console.log('Overlay kattintva - menü bezárása');
+                        closeMenu();
+                    });
                     
                     // Menü bezárása link kattintáskor
                     const mobileLinks = mobileMenu.querySelectorAll('a');
