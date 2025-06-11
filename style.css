@@ -891,6 +891,14 @@
 #mobileThemeSwitch:checked + .mobile-theme-switch-label .mobile-switch-button {
     transform: translateX(18px);
 }
+
+#themeSwitch:checked + .theme-switch-label .switch-track {
+    background: #4CAF50;
+}
+
+#themeSwitch:checked + .theme-switch-label .switch-button {
+    transform: translateX(18px);
+}
 /*
         .mobile-theme-switch-label {
             display: flex;
