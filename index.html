@@ -8,7 +8,16 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    
+    <div class="mobile-theme-toggle">
+                <!-- MOBIL TÉMAVÁLTÓ GOMB -->
+                    <input type="checkbox" id="mobileThemeSwitch" style="display: none;">
+                    <label for="mobileThemeSwitch" class="mobile-theme-switch-label">
+                        <span id="mobileThemeIcon">🌙</span>
+                        <div class="mobile-switch-track" id="mobileSwitchTrack">
+                            <div class="mobile-switch-button" id="mobileSwitchButton"></div>
+                        </div>
+                    </label>
+    </div>
 
     <!-- MENÜ OVERLAY -->
     <div class="menu-overlay" id="menuOverlay"></div>
@@ -20,16 +29,6 @@
             <li><a href="about_page.html">Rólunk</a></li>
             <li><a href="services_page.html">Szolgáltatások</a></li>
             <li><a href="contact_page.html">Kapcsolat</a></li>
-            <li  class="mobile-theme-toggle">
-                <!-- MOBIL TÉMAVÁLTÓ GOMB -->
-                    <input type="checkbox" id="mobileThemeSwitch" style="display: none;">
-                    <label for="mobileThemeSwitch" class="mobile-theme-switch-label">
-                        <span id="mobileThemeIcon">🌙</span>
-                        <div class="mobile-switch-track" id="mobileSwitchTrack">
-                            <div class="mobile-switch-button" id="mobileSwitchButton"></div>
-                        </div>
-                    </label>
-            </li>
         </ul>
     </div>
 
