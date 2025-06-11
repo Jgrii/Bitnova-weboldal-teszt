@@ -1017,12 +1017,9 @@ a, button, input, textarea, select {
 
 /* FŐCÍMEK ÉS CÍMEK - világosabb színek sötét témában */
 .dark-mode .hero h1,
-.dark-mode h1 {
+.dark-mode h1
+.dark-mode h2{
     color: #6ba3f5 !important; /* Világos kék #142b72 helyett */
-}
-
-.dark-mode h2 {
-    color: #b8a7e8 !important; /* Világos lila */
 }
 
 .dark-mode h3 {
