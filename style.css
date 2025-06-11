@@ -81,7 +81,7 @@
             box-shadow: 0 4px 15px rgba(20, 43, 114, 0.3);
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 997;
         }
 
         .header-content {
@@ -927,12 +927,12 @@
 /* CTA gomb védelem */
 .cta-button {
     position: relative;
-    z-index: 998;
+    z-index: 995;
     pointer-events: auto !important;
 }
 
 /* Általános linkek védelem */
 a, button, input, textarea, select {
     position: relative;
-    z-index: 998;
+    z-index: 995;
 }
