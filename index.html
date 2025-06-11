@@ -105,214 +105,117 @@
     </footer>
 
     <script>
-        // Teszt kód - távolítsd el később
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM betöltve');
-    const hamburger = document.getElementById('hamburger');
-    const mobileMenu = document.getElementById('mobileMenu');
-    
-    if (hamburger) {
-        console.log('Hamburger elem megtalálva');
-        hamburger.addEventListener('click', function() {
-            console.log('Hamburger kattintva!');
-        });
-    } else {
-        console.log('HIBA: Hamburger elem nem található!');
-    }
-    
-    if (mobileMenu) {
-        console.log('Mobil menü elem megtalálva');
-    } else {
-        console.log('HIBA: Mobil menü elem nem található!');
-    }
-});
-        // HAMBURGER MENÜ KEZELÉS
-        (function() {
-            const hamburger = document.getElementById('hamburger');
-            const mobileMenu = document.getElementById('mobileMenu');
-            const menuOverlay = document.getElementById('menuOverlay');
-            
-            function toggleMenu() {
-                hamburger.classList.toggle('active');
-                mobileMenu.classList.toggle('active');
-                menuOverlay.classList.toggle('active');
-                
-                // Body scroll letiltása/engedélyezése
-                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
-            }
-            
-            function closeMenu() {
-                hamburger.classList.remove('active');
-                mobileMenu.classList.remove('active');
-                menuOverlay.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-            
-            hamburger.addEventListener('click', toggleMenu);
-            menuOverlay.addEventListener('click', closeMenu);
-            
-            // Menü bezárása link kattintáskor
-            const mobileLinks = mobileMenu.querySelectorAll('a');
-            mobileLinks.forEach(link => {
-                link.addEventListener('click', closeMenu);
-            });
-            
-            // ESC billentyű kezelés
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
-                    closeMenu();
-                }
-            });
-        })();
+        // HIBAKERESÉS - ellenőrizzük a konzolt
+        console.log('JavaScript betöltve');
 
-        // TÉMAVÁLTÓ KEZELÉS - ASZTALI ÉS MOBIL
-        (function() {
-            const themeSwitch = document.getElementById('themeSwitch');
-            const mobileThemeSwitch = document.getElementById('mobileThemeSwitch');
-            const themeIcon = document.getElementById('themeIcon');
-            const mobileThemeIcon = document.getElementById('mobileThemeIcon');
-            const switchTrack = document.getElementById('switchTrack');
-            const mobileSwitchTrack = document.getElementById('mobileSwitchTrack');
-            const switchButton = document.getElementById('switchButton');
-            const mobileSwitchButton = document.getElementById('mobileSwitchButton');
+        // DOM betöltés várása
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM betöltve');
             
-            // Memóriában tároljuk a téma beállítást (localStorage helyett)
-            let currentTheme = 'light';
-            
-            function saveTheme(theme) {
-                currentTheme = theme;
-                // Próbáljuk meg localStorage-ba menteni, ha elérhető
-                try {
-                    localStorage.setItem('theme', theme);
-                } catch (e) {
-                    // Ha nem elérhető localStorage, csak memóriában tartjuk
-                    console.log('localStorage nem elérhető, memóriában tárolva');
-                }
-            }
-            
-            function loadTheme() {
-                try {
-                    const saved = localStorage.getItem('theme');
-                    return saved || 'light';
-                } catch (e) {
-                    // Ha localStorage nem elérhető, visszaadjuk az alapértelmezett világos témát
-                    return 'light';
-                }
-            }
-            
-            function applyTheme(isDark) {
-                console.log('Téma váltás:', isDark ? 'sötét' : 'világos');
+            try {
+                // HAMBURGER MENÜ KEZELÉS
+                const hamburger = document.getElementById('hamburger');
+                const mobileMenu = document.getElementById('mobileMenu');
+                const menuOverlay = document.getElementById('menuOverlay');
                 
-                if (isDark) {
-                    // HÁTTÉR
-                    document.body.style.setProperty('background-color', '#1a1a1a', 'important');
-                    document.body.style.setProperty('background', '#1a1a1a', 'important');
-                    document.body.style.setProperty('color', '#e0e0e0', 'important');
-                    document.documentElement.style.setProperty('background-color', '#1a1a1a', 'important');
-                    document.documentElement.style.setProperty('background', '#1a1a1a', 'important');
+                console.log('Hamburger elem:', hamburger);
+                console.log('Mobil menü elem:', mobileMenu);
+                console.log('Overlay elem:', menuOverlay);
+                
+                if (hamburger && mobileMenu && menuOverlay) {
+                    function toggleMenu() {
+                        console.log('Menü váltás');
+                        hamburger.classList.toggle('active');
+                        mobileMenu.classList.toggle('active');
+                        menuOverlay.classList.toggle('active');
+                        
+                        // Body scroll letiltása/engedélyezése
+                        document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+                    }
                     
-                    // MINDEN ELEM SZÖVEGSZÍNÉNEK ÁTÍRÁSA
-                    const allElements = document.querySelectorAll('*');
-                    allElements.forEach(element => {
-                        // Kihagyjuk a témaváltó gombokat
-                        if (element.closest('.theme-toggle-nav') || 
-                            element.closest('.mobile-theme-toggle') || 
-                            element.classList.contains('theme-toggle-nav') ||
-                            element.classList.contains('mobile-theme-toggle')) return;
-                        
-                        // Szövegszín átírása
-                        element.style.setProperty('color', '#e0e0e0', 'important');
-                        
-                        // Háttérszín ellenőrzése és átírása
-                        const computedStyle = window.getComputedStyle(element);
-                        const bgColor = computedStyle.backgroundColor;
-                        
-                        if (bgColor === 'rgb(255, 255, 255)' || 
-                            bgColor === 'white' || 
-                            bgColor === 'rgba(255, 255, 255, 1)' ||
-                            bgColor.includes('255, 255, 255')) {
-                            element.style.setProperty('background-color', '#2d2d2d', 'important');
+                    function closeMenu() {
+                        console.log('Menü bezárás');
+                        hamburger.classList.remove('active');
+                        mobileMenu.classList.remove('active');
+                        menuOverlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                    
+                    hamburger.addEventListener('click', function(e) {
+                        console.log('Hamburger kattintva!');
+                        e.preventDefault();
+                        e.stopPropagation();
+                        toggleMenu();
+                    });
+                    
+                    menuOverlay.addEventListener('click', closeMenu);
+                    
+                    // Menü bezárása link kattintáskor
+                    const mobileLinks = mobileMenu.querySelectorAll('a');
+                    mobileLinks.forEach(link => {
+                        link.addEventListener('click', closeMenu);
+                    });
+                    
+                    // ESC billentyű kezelés
+                    document.addEventListener('keydown', function(e) {
+                        if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                            closeMenu();
                         }
                     });
-                    
-                    // CSS osztályok
-                    document.body.classList.add('dark-mode');
-                    document.documentElement.classList.add('dark-mode');
-                    
-                    // Gombok frissítése
-                    if (themeIcon) themeIcon.textContent = '☀️';
-                    if (mobileThemeIcon) mobileThemeIcon.textContent = '☀️';
-                    
-                    if (switchTrack) switchTrack.style.background = '#4CAF50';
-                    if (mobileSwitchTrack) mobileSwitchTrack.style.background = '#4CAF50';
-                    
-                    if (switchButton) switchButton.style.transform = 'translateX(20px)';
-                    if (mobileSwitchButton) mobileSwitchButton.style.transform = 'translateX(18px)';
-                    
-                    if (themeSwitch) themeSwitch.checked = true;
-                    if (mobileThemeSwitch) mobileThemeSwitch.checked = true;
-                    
                 } else {
-                    // VILÁGOS TÉMA
-                    document.body.style.setProperty('background-color', '#ffffff', 'important');
-                    document.body.style.setProperty('background', '#ffffff', 'important');
-                    document.body.style.setProperty('color', '#333333', 'important');
-                    document.documentElement.style.setProperty('background-color', '#ffffff', 'important');
-                    document.documentElement.style.setProperty('background', '#ffffff', 'important');
-                    
-                    // MINDEN ELEM VISSZAÁLLÍTÁSA
-                    const allElements = document.querySelectorAll('*');
-                    allElements.forEach(element => {
-                        // Kihagyjuk a témaváltó gombokat
-                        if (element.closest('.theme-toggle-nav') || 
-                            element.closest('.mobile-theme-toggle') || 
-                            element.classList.contains('theme-toggle-nav') ||
-                            element.classList.contains('mobile-theme-toggle')) return;
-                        
-                        // Szövegszín visszaállítása
-                        element.style.removeProperty('color');
-                        element.style.removeProperty('background-color');
+                    console.error('Hamburger menü elemek nem találhatók!');
+                }
+
+                // TÉMAVÁLTÓ KEZELÉS - EGYSZERŰSÍTETT VERZIÓ
+                const themeSwitch = document.getElementById('themeSwitch');
+                const mobileThemeSwitch = document.getElementById('mobileThemeSwitch');
+                
+                if (themeSwitch) {
+                    themeSwitch.addEventListener('change', function() {
+                        console.log('Témaváltó kattintva (desktop)');
+                        toggleTheme(this.checked);
                     });
-                    
-                    // CSS osztályok eltávolítása
-                    document.body.classList.remove('dark-mode');
-                    document.documentElement.classList.remove('dark-mode');
-                    
-                    // Gombok frissítése
-                    if (themeIcon) themeIcon.textContent = '🌙';
-                    if (mobileThemeIcon) mobileThemeIcon.textContent = '🌙';
-                    
-                    if (switchTrack) switchTrack.style.background = '#ccc';
-                    if (mobileSwitchTrack) mobileSwitchTrack.style.background = '#ccc';
-                    
-                    if (switchButton) switchButton.style.transform = 'translateX(0px)';
-                    if (mobileSwitchButton) mobileSwitchButton.style.transform = 'translateX(0px)';
-                    
-                    if (themeSwitch) themeSwitch.checked = false;
-                    if (mobileThemeSwitch) mobileThemeSwitch.checked = false;
                 }
                 
-                saveTheme(isDark ? 'dark' : 'light');
+                if (mobileThemeSwitch) {
+                    mobileThemeSwitch.addEventListener('change', function() {
+                        console.log('Témaváltó kattintva (mobile)');
+                        toggleTheme(this.checked);
+                    });
+                }
+                
+                function toggleTheme(isDark) {
+                    console.log('Téma váltás:', isDark ? 'sötét' : 'világos');
+                    
+                    if (isDark) {
+                        document.body.classList.add('dark-mode');
+                        document.documentElement.classList.add('dark-mode');
+                    } else {
+                        document.body.classList.remove('dark-mode');
+                        document.documentElement.classList.remove('dark-mode');
+                    }
+                    
+                    // Ikonok frissítése
+                    const themeIcon = document.getElementById('themeIcon');
+                    const mobileThemeIcon = document.getElementById('mobileThemeIcon');
+                    
+                    if (themeIcon) themeIcon.textContent = isDark ? '☀️' : '🌙';
+                    if (mobileThemeIcon) mobileThemeIcon.textContent = isDark ? '☀️' : '🌙';
+                    
+                    // Kapcsolók szinkronizálása
+                    if (themeSwitch) themeSwitch.checked = isDark;
+                    if (mobileThemeSwitch) mobileThemeSwitch.checked = isDark;
+                }
+
+            } catch (error) {
+                console.error('JavaScript hiba:', error);
             }
-            
-            // Event listenerek
-            if (themeSwitch) {
-                themeSwitch.addEventListener('change', function() {
-                    applyTheme(this.checked);
-                });
-            }
-            
-            if (mobileThemeSwitch) {
-                mobileThemeSwitch.addEventListener('change', function() {
-                    applyTheme(this.checked);
-                });
-            }
-            
-            // Téma betöltése
-            const savedTheme = loadTheme();
-            const isDark = savedTheme === 'dark';
-            applyTheme(isDark);
-        })();
+        });
+
+        // Általános kattintás teszt
+        document.addEventListener('click', function(e) {
+            console.log('Kattintás esemény:', e.target);
+        });
     </script>
 
 </body>
