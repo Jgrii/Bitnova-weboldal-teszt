@@ -105,6 +105,27 @@
     </footer>
 
     <script>
+        // Teszt kód - távolítsd el később
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM betöltve');
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    if (hamburger) {
+        console.log('Hamburger elem megtalálva');
+        hamburger.addEventListener('click', function() {
+            console.log('Hamburger kattintva!');
+        });
+    } else {
+        console.log('HIBA: Hamburger elem nem található!');
+    }
+    
+    if (mobileMenu) {
+        console.log('Mobil menü elem megtalálva');
+    } else {
+        console.log('HIBA: Mobil menü elem nem található!');
+    }
+});
         // HAMBURGER MENÜ KEZELÉS
         (function() {
             const hamburger = document.getElementById('hamburger');
