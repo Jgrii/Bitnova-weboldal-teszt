@@ -927,12 +927,12 @@
 /* CTA gomb védelem */
 .cta-button {
     position: relative;
-    z-index: 1000;
+    z-index: 998;
     pointer-events: auto !important;
 }
 
 /* Általános linkek védelem */
 a, button, input, textarea, select {
     position: relative;
-    z-index: 1000;
+    z-index: 998;
 }
