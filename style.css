@@ -1017,7 +1017,10 @@ a, button, input, textarea, select {
 
 /* FŐCÍMEK ÉS CÍMEK - világosabb színek sötét témában */
 .dark-mode .hero h1,
-.dark-mode h1
+.dark-mode h1{
+    color: #6ba3f5 !important; /* Világos kék #142b72 helyett */
+}
+
 .dark-mode h2{
     color: #6ba3f5 !important; /* Világos kék #142b72 helyett */
 }
@@ -1101,11 +1104,11 @@ a, button, input, textarea, select {
 
 /* LINKEK - aktív állapot */
 .dark-mode nav a.active {
-    color: #4CAF50 !important; /* Zöld aktív link */
+    color: #e0ca64 !important; /* Zöld aktív link */
 }
 
 .dark-mode nav a:hover {
-    color: #66BB6A !important; /* Világosabb zöld hover */
+    color: #e0ca64 !important; /* Világosabb zöld hover */
 }
 
 /* MOBIL MENÜ LINKEK */
