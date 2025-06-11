@@ -643,7 +643,7 @@
             left: -100%;
             width: 80%;
             height: 100vh;
-            background: rgba(255, 255, 255, 0.95);
+            background-color: #142b72;
             backdrop-filter: blur(15px);
             z-index: 999;
             padding: 80px 30px 30px;
