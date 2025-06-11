@@ -885,3 +885,54 @@
         .dark-mode .mobile-theme-switch-label {
             background: rgba(45, 45, 45, 0.9) !important;
         }
+
+/* OVERLAY JAVÍTÁS - add hozzá a style.css végéhez */
+
+/* Overlay alapértelmezett elrejtése */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 998;
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: opacity 0.3s ease;
+}
+
+/* Csak aktív állapotban jelenjen meg */
+.menu-overlay.active {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* Hamburger menü z-index javítás */
+.hamburger {
+    position: relative;
+    z-index: 1002 !important;
+    pointer-events: auto !important;
+}
+
+/* Mobil menü z-index */
+.mobile-menu {
+    z-index: 999 !important;
+}
+
+/* CTA gomb védelem */
+.cta-button {
+    position: relative;
+    z-index: 1000;
+    pointer-events: auto !important;
+}
+
+/* Általános linkek védelem */
+a, button, input, textarea, select {
+    position: relative;
+    z-index: 1000;
+}
