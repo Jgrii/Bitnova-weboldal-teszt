@@ -6,7 +6,6 @@
     <title>BitNova Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="dashboardcss.css">
-    
 </head>
 <body>
     <div class="container">
@@ -46,7 +45,6 @@
             </nav>
 
             <main class="content">
-                <!-- Dashboard Section -->
                 <div id="dashboard" class="section">
                     <h2 style="margin-bottom: 30px; color: #2c3e50;">Áttekintés</h2>
                     
@@ -58,8 +56,8 @@
                                     Számlák összesen
                                 </div>
                             </div>
-                            <div class="card-value">12</div>
-                            <div class="card-subtitle">3 függőben, 9 kifizetve</div>
+                            <div class="card-value" id="totalInvoices">12</div>
+                            <div class="card-subtitle" id="invoicesSummary">3 függőben, 9 kifizetve</div>
                         </div>
 
                         <div class="card">
@@ -69,7 +67,7 @@
                                     Havi költség
                                 </div>
                             </div>
-                            <div class="card-value">89,500 Ft</div>
+                            <div class="card-value" id="monthlyCost">89,500 Ft</div>
                             <div class="card-subtitle">Aktuális havi szolgáltatások</div>
                         </div>
 
@@ -80,7 +78,7 @@
                                     Aktív szolgáltatások
                                 </div>
                             </div>
-                            <div class="card-value">5</div>
+                            <div class="card-value" id="activeServices">5</div>
                             <div class="card-subtitle">Összes szolgáltatás fut</div>
                         </div>
 
@@ -91,8 +89,8 @@
                                     Nyitott jegyek
                                 </div>
                             </div>
-                            <div class="card-value">2</div>
-                            <div class="card-subtitle">1 sürgős, 1 normál prioritás</div>
+                            <div class="card-value" id="openTickets">2</div>
+                            <div class="card-subtitle" id="ticketsSummary">1 sürgős, 1 normál prioritás</div>
                         </div>
                     </div>
 
@@ -106,7 +104,7 @@
                                     <th>Státusz</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="activitiesTable">
                                 <tr>
                                     <td>2025-06-18</td>
                                     <td>Számla #2025-156 létrehozva</td>
@@ -127,7 +125,6 @@
                     </div>
                 </div>
 
-                <!-- Invoices Section -->
                 <div id="invoices" class="section hidden">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
                         <h2 style="color: #2c3e50;">Számlák</h2>
@@ -147,7 +144,7 @@
                                     <th>Műveletek</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="invoicesTable">
                                 <tr>
                                     <td>#2025-156</td>
                                     <td>2025-06-18</td>
@@ -158,36 +155,15 @@
                                         <button class="btn btn-sm btn-secondary">Letölt</button>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>#2025-155</td>
-                                    <td>2025-06-15</td>
-                                    <td>89,500 Ft</td>
-                                    <td><span class="status paid">Kifizetve</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-primary">Megtekint</button>
-                                        <button class="btn btn-sm btn-secondary">Letölt</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#2025-154</td>
-                                    <td>2025-06-01</td>
-                                    <td>23,400 Ft</td>
-                                    <td><span class="status overdue">Lejárt</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-primary">Megtekint</button>
-                                        <button class="btn btn-sm btn-secondary">Letölt</button>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- Services Section -->
                 <div id="services" class="section hidden">
                     <h2 style="margin-bottom: 30px; color: #2c3e50;">Szolgáltatások</h2>
                     
-                    <div class="dashboard-grid">
+                    <div class="dashboard-grid" id="servicesGrid">
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">
@@ -203,42 +179,9 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <i class="fas fa-globe" style="color: #28a745;"></i>
-                                    Domain kezelés
-                                </div>
-                            </div>
-                            <div class="card-subtitle">bitnova.hu + 2 aldomain</div>
-                            <div style="margin-top: 15px;">
-                                <span class="status paid">Aktív</span>
-                                <div style="margin-top: 10px; color: #6c757d; font-size: 14px;">
-                                    Lejárat: 2025-12-15
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <i class="fas fa-shield-alt" style="color: #dc3545;"></i>
-                                    Biztonsági mentés
-                                </div>
-                            </div>
-                            <div class="card-subtitle">Napi automatikus mentés</div>
-                            <div style="margin-top: 15px;">
-                                <span class="status paid">Aktív</span>
-                                <div style="margin-top: 10px; color: #6c757d; font-size: 14px;">
-                                    Utolsó mentés: 2025-06-18 02:00
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
-                <!-- Tickets Section -->
                 <div id="tickets" class="section hidden">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
                         <h2 style="color: #2c3e50;">Támogatási jegyek</h2>
@@ -259,7 +202,7 @@
                                     <th>Műveletek</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="ticketsTable">
                                 <tr>
                                     <td>#T-2025-012</td>
                                     <td>Weboldal betöltési idő optimalizálás</td>
@@ -270,45 +213,34 @@
                                         <button class="btn btn-sm btn-primary">Megtekint</button>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>#T-2025-011</td>
-                                    <td>Email beállítások módosítása</td>
-                                    <td><span class="status pending">Normál</span></td>
-                                    <td><span class="status pending">Várakozik</span></td>
-                                    <td>2025-06-14</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-primary">Megtekint</button>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- Profile Section -->
                 <div id="profile" class="section hidden">
                     <h2 style="margin-bottom: 30px; color: #2c3e50;">Profil beállítások</h2>
                     
                     <div class="table-container">
-                        <form style="max-width: 600px;">
+                        <form id="profileForm" style="max-width: 600px;">
                             <div style="margin-bottom: 20px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: 600;">Cégnév</label>
-                                <input type="text" value="Példa Kft." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                                <input type="text" id="companyName" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
                             </div>
                             
                             <div style="margin-bottom: 20px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: 600;">Email cím</label>
-                                <input type="email" id="profileEmail" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                                <input type="email" id="profileEmail" readonly style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background-color: #f8f9fa;">
                             </div>
                             
                             <div style="margin-bottom: 20px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: 600;">Telefon</label>
-                                <input type="tel" value="+36 30 123 4567" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                                <input type="tel" id="phone" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
                             </div>
                             
                             <div style="margin-bottom: 20px;">
                                 <label style="display: block; margin-bottom: 5px; font-weight: 600;">Cím</label>
-                                <textarea style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; height: 80px;">1234 Budapest, Példa utca 12.</textarea>
+                                <textarea id="address" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; height: 80px;"></textarea>
                             </div>
                             
                             <button type="submit" class="btn btn-primary">Mentés</button>
@@ -316,28 +248,27 @@
                     </div>
                 </div>
 
-                <!-- Settings Section -->
                 <div id="settings" class="section hidden">
                     <h2 style="margin-bottom: 30px; color: #2c3e50;">Beállítások</h2>
                     
                     <div class="table-container">
                         <h3 style="margin-bottom: 15px;">Értesítési beállítások</h3>
-                        <form>
+                        <form id="settingsForm">
                             <div style="margin-bottom: 15px;">
                                 <label style="display: flex; align-items: center; gap: 10px;">
-                                    <input type="checkbox" checked>
+                                    <input type="checkbox" id="emailInvoice">
                                     Email értesítés új számláról
                                 </label>
                             </div>
                             <div style="margin-bottom: 15px;">
                                 <label style="display: flex; align-items: center; gap: 10px;">
-                                    <input type="checkbox" checked>
+                                    <input type="checkbox" id="emailTicket">
                                     Email értesítés támogatási jegy státusz változásról
                                 </label>
                             </div>
                             <div style="margin-bottom: 15px;">
                                 <label style="display: flex; align-items: center; gap: 10px;">
-                                    <input type="checkbox">
+                                    <input type="checkbox" id="smsNotifications">
                                     SMS értesítések
                                 </label>
                             </div>
@@ -349,87 +280,659 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.15.0/firebase-app-compat.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.15.0/firebase-auth-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.15.0/firebase-firestore-compat.min.js"></script>
 
     <script>
-        // Firebase Configuration - Add your config here
-          const firebaseConfig = {
-            apiKey: "AIzaSyAXnAo-7BF6iKjNzYr0uoJbhlpCWNaS9s4",
-            authDomain: "bitnova-backend.firebaseapp.com",
-            projectId: "bitnova-backend",
-            storageBucket: "bitnova-backend.firebasestorage.app",
-            messagingSenderId: "312941837204",
-            appId: "1:312941837204:web:f6e3ff0d44cab13f30ed81",
-            measurementId: "G-VBW8LX8LDE"
-          };
+        const firebaseConfig = {
+            apiKey: "your-api-key",
+            authDomain: "your-project.firebaseapp.com",
+            projectId: "your-project-id",
+            storageBucket: "your-project.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "your-app-id"
+        };
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        try {
+            firebase.initializeApp(firebaseConfig);
+            console.log('✅ Firebase inicializálva');
+        } catch (error) {
+            console.error('❌ Firebase inicializálási hiba:', error);
+            alert('Firebase inicializálási hiba: ' + error.message);
+        }
+        
         const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+            .then(() => {
+                console.log('✅ Auth persistence beállítva');
+            })
+            .catch((error) => {
+                console.error('Auth persistence hiba:', error);
+            });
 
-        // Check authentication state
-        auth.onAuthStateChanged((user) => {
+        auth.onAuthStateChanged(async (user) => {
+            console.log('Auth state changed:', user);
+            
             if (user) {
+                console.log('✅ Sikeres authentikáció:', user.email);
                 document.getElementById('userEmail').textContent = user.email;
                 document.getElementById('profileEmail').value = user.email;
-                console.log('Bejelentkezett felhasználó:', user.email);
+                
+                await initializeUserData(user.uid, user.email);
+                await loadUserData(user.uid);
+                
             } else {
-                // Redirect to bejelentkezes.html if not authenticated
-                console.log('Nincs bejelentkezett felhasználó, átirányítás...');
-                window.location.href = 'bejelentkezes.html';
+                console.log('❌ Nincs bejelentkezett felhasználó');
+                setTimeout(() => {
+                    window.location.href = 'bejelentkezes.html';
+                }, 500);
             }
+        }, (error) => {
+            console.error('Auth state change error:', error);
+            alert('Hiba az authentikáció során: ' + error.message);
         });
 
-        // Logout function
         function logout() {
             auth.signOut().then(() => {
                 console.log('Sikeres kijelentkezés');
-                window.location.href = 'index.html';
+                window.location.href = 'bejelentkezes.html';
             }).catch((error) => {
                 console.error('Kijelentkezési hiba:', error);
                 alert('Hiba történt a kijelentkezés során: ' + error.message);
             });
         }
 
-        // Navigation function
-        function showSection(sectionName) {
-            // Hide all sections
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(section => section.classList.add('hidden'));
-            
-            // Show selected section
-            document.getElementById(sectionName).classList.remove('hidden');
-            
-            // Update active nav item
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => item.classList.remove('active'));
-            event.target.classList.add('active');
+        async function initializeUserData(userId, email) {
+            try {
+                const userRef = db.collection('users').doc(userId);
+                const doc = await userRef.get();
+                
+                if (!doc.exists) {
+                    const defaultUserData = {
+                        email: email,
+                        companyName: '',
+                        phone: '',
+                        address: '',
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        settings: {
+                            emailInvoice: true,
+                            emailTicket: true,
+                            smsNotifications: false
+                        }
+                    };
+                    
+                    await userRef.set(defaultUserData);
+                    console.log('✅ Új felhasználó dokumentum létrehozva');
+                    
+                    await createDefaultInvoices(userId);
+                    await createDefaultServices(userId);
+                    await createDefaultTickets(userId);
+                    await createDefaultActivities(userId);
+                    
+                    console.log('✅ Alapértelmezett adatok létrehozva');
+                }
+            } catch (error) {
+                console.error('Felhasználó inicializálási hiba:', error);
+            }
         }
 
-        // Add some interactivity and check URL parameters
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('BitNova Dashboard betöltve');
-            
-            // Check if user came from login page
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('login') === 'success') {
-                // Show success message
-                const alert = document.createElement('div');
-                alert.className = 'alert alert-success';
-                alert.innerHTML = '<i class="fas fa-check-circle"></i> Sikeres bejelentkezés! Üdvözöljük a BitNova Dashboard-on.';
-                document.querySelector('.content').insertBefore(alert, document.querySelector('.content').firstChild);
-                
-                // Remove alert after 5 seconds
-                setTimeout(() => {
-                    alert.remove();
-                }, 5000);
-                
-                // Clean URL
-                window.history.replaceState({}, document.title, window.location.pathname);
+        async function createDefaultInvoices(userId) {
+            const invoices = [
+                {
+                    userId: userId,
+                    invoiceNumber: '2025-156',
+                    amount: 45600,
+                    status: 'pending',
+                    date: firebase.firestore.Timestamp.now(),
+                    description: 'Havi hosting szolgáltatás'
+                },
+                {
+                    userId: userId,
+                    invoiceNumber: '2025-155',
+                    amount: 89500,
+                    status: 'paid',
+                    date: firebase.firestore.Timestamp.fromDate(new Date('2025-06-15')),
+                    description: 'Szerver bérlés + domain'
+                },
+                {
+                    userId: userId,
+                    invoiceNumber: '2025-154',
+                    amount: 23400,
+                    status: 'overdue',
+                    date: firebase.firestore.Timestamp.fromDate(new Date('2025-06-01')),
+                    description: 'Kiegészítő szolgáltatások'
+                }
+            ];
+
+            for (const invoice of invoices) {
+                await db.collection('invoices').add(invoice);
             }
+        }
+
+        async function createDefaultServices(userId) {
+            const services = [
+                {
+                    userId: userId,
+                    name: 'Szerver hosting',
+                    description: 'VPS szerver - 4GB RAM, 2 CPU',
+                    status: 'active',
+                    monthlyPrice: 45600,
+                    icon: 'fas fa-server',
+                    nextBilling: firebase.firestore.Timestamp.fromDate(new Date('2025-07-01'))
+                },
+                {
+                    userId: userId,
+                    name: 'Domain kezelés',
+                    description: 'bitnova.hu + 2 aldomain',
+                    status: 'active',
+                    monthlyPrice: 12000,
+                    icon: 'fas fa-globe',
+                    nextBilling: firebase.firestore.Timestamp.fromDate(new Date('2025-12-15'))
+                },
+                {
+                    userId: userId,
+                    name: 'Biztonsági mentés',
+                    description: 'Napi automatikus mentés',
+                    status: 'active',
+                    monthlyPrice: 8900,
+                    icon: 'fas fa-shield-alt',
+                    nextBilling: firebase.firestore.Timestamp.fromDate(new Date('2025-07-01'))
+                }
+            ];
+
+            for (const service of services) {
+                await db.collection('services').add(service);
+            }
+        }
+
+        async function createDefaultTickets(userId) {
+            const tickets = [
+                {
+                    userId: userId,
+                    ticketNumber: 'T-2025-012',
+                    subject: 'Weboldal betöltési idő optimalizálás',
+                    priority: 'urgent',
+                    status: 'in_progress',
+                    createdAt: firebase.firestore.Timestamp.fromDate(new Date('2025-06-16'))
+                },
+                {
+                    userId: userId,
+                    ticketNumber: 'T-2025-011',
+                    subject: 'Email beállítások módosítása',
+                    priority: 'normal',
+                    status: 'open',
+                    createdAt: firebase.firestore.Timestamp.fromDate(new Date('2025-06-14'))
+                }
+            ];
+
+            for (const ticket of tickets) {
+                await db.collection('tickets').add(ticket);
+            }
+        }
+
+        async function createDefaultActivities(userId) {
+            const activities = [
+                {
+                    userId: userId,
+                    description: 'Számla #2025-156 létrehozva',
+                    type: 'invoice',
+                    status: 'Függőben',
+                    date: firebase.firestore.Timestamp.now()
+                },
+                {
+                    userId: userId,
+                    description: 'Szerver karbantartás befejezve',
+                    type: 'maintenance',
+                    status: 'Kész',
+                    date: firebase.firestore.Timestamp.fromDate(new Date('2025-06-17'))
+                },
+                {
+                    userId: userId,
+                    description: 'Új támogatási jegy: Weboldal lassú',
+                    type: 'ticket',
+                    status: 'Folyamatban',
+                    date: firebase.firestore.Timestamp.fromDate(new Date('2025-06-16'))
+                }
+            ];
+
+            for (const activity of activities) {
+                await db.collection('activities').add(activity);
+            }
+        }
+
+        async function loadUserData(userId) {
+            try {
+                console.log('📊 Adatok betöltése userId:', userId);
+                
+                await loadUserProfile(userId);
+                await loadDashboardData(userId);
+                await loadInvoices(userId);
+                await loadServices(userId);
+                await loadTickets(userId);
+                await loadActivities(userId);
+                
+            } catch (error) {
+                console.error('Adatbetöltési hiba:', error);
+            }
+        }
+
+        async function loadUserProfile(userId) {
+            try {
+                const doc = await db.collection('users').doc(userId).get();
+                if (doc.exists) {
+                    const data = doc.data();
+                    console.log('👤 Felhasználói adatok:', data);
+                    
+                    document.getElementById('companyName').value = data.companyName || '';
+                    document.getElementById('phone').value = data.phone || '';
+                    document.getElementById('address').value = data.address || '';
+                    
+                    if (data.settings) {
+                        document.getElementById('emailInvoice').checked = data.settings.emailInvoice || false;
+                        document.getElementById('emailTicket').checked = data.settings.emailTicket || false;
+                        document.getElementById('smsNotifications').checked = data.settings.smsNotifications || false;
+                    }
+                }
+            } catch (error) {
+                console.error('Profil betöltési hiba:', error);
+            }
+        }
+
+        async function loadDashboardData(userId) {
+            try {
+                const invoicesSnapshot = await db.collection('invoices').where('userId', '==', userId).get();
+                const servicesSnapshot = await db.collection('services').where('userId', '==', userId).get();
+                const ticketsSnapshot = await db.collection('tickets').where('userId', '==', userId).get();
+                
+                document.getElementById('totalInvoices').textContent = invoicesSnapshot.size;
+                document.getElementById('activeServices').textContent = servicesSnapshot.size;
+                
+                const openTickets = ticketsSnapshot.docs.filter(doc => doc.data().status !== 'closed').length;
+                document.getElementById('openTickets').textContent = openTickets;
+                
+                let monthlyCost = 0;
+                let pending = 0, paid = 0;
+                let urgent = 0, normal = 0;
+                
+                servicesSnapshot.forEach(doc => {
+                    const service = doc.data();
+                    if (service.monthlyPrice) monthlyCost += service.monthlyPrice;
+                });
+                
+                invoicesSnapshot.forEach(doc => {
+                    const invoice = doc.data();
+                    if (invoice.status === 'paid') paid++;
+                    else pending++;
+                });
+                
+                ticketsSnapshot.forEach(doc => {
+                    const ticket = doc.data();
+                    if (ticket.status !== 'closed') {
+                        if (ticket.priority === 'urgent') urgent++;
+                        else normal++;
+                    }
+                });
+                
+                document.getElementById('monthlyCost').textContent = monthlyCost.toLocaleString('hu-HU') + ' Ft';
+                document.getElementById('invoicesSummary').textContent = `${pending} függőben, ${paid} kifizetve`;
+                document.getElementById('ticketsSummary').textContent = `${urgent} sürgős, ${normal} normál prioritás`;
+                
+                console.log('📊 Dashboard adatok frissítve');
+            } catch (error) {
+                console.error('Dashboard adatok betöltési hiba:', error);
+            }
+        }
+
+        async function loadInvoices(userId) {
+            try {
+                const snapshot = await db.collection('invoices').where('userId', '==', userId).orderBy('date', 'desc').get();
+                const tableBody = document.getElementById('invoicesTable');
+                tableBody.innerHTML = '';
+                
+                snapshot.forEach(doc => {
+                    const invoice = doc.data();
+                    const row = document.createElement('tr');
+                    
+                    const statusClass = invoice.status === 'paid' ? 'paid' : 
+                                       invoice.status === 'pending' ? 'pending' : 'overdue';
+                    
+                    const statusText = invoice.status === 'paid' ? 'Kifizetve' : 
+                                      invoice.status === 'pending' ? 'Függőben' : 'Lejárt';
+                    
+                    row.innerHTML = `
+                        <td>#${invoice.invoiceNumber}</td>
+                        <td>${new Date(invoice.date.seconds * 1000).toLocaleDateString('hu-HU')}</td>
+                        <td>${invoice.amount.toLocaleString('hu-HU')} Ft</td>
+                        <td><span class="status ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" onclick="viewInvoice('${doc.id}')">Megtekint</button>
+                            <button class="btn btn-sm btn-secondary" onclick="downloadInvoice('${doc.id}')">Letölt</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+                
+                console.log('💰 Számlák betöltve:', snapshot.size);
+            } catch (error) {
+                console.error('Számlák betöltési hiba:', error);
+            }
+        }
+
+        async function loadServices(userId) {
+            try {
+                const snapshot = await db.collection('services').where('userId', '==', userId).get();
+                const container = document.getElementById('servicesGrid');
+                container.innerHTML = '';
+                
+                snapshot.forEach(doc => {
+                    const service = doc.data();
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    
+                    const statusClass = service.status === 'active' ? 'paid' : 'pending';
+                    const statusText = service.status === 'active' ? 'Aktív' : 'Inaktív';
+                    
+                    const nextBilling = service.nextBilling ? 
+                        new Date(service.nextBilling.seconds * 1000).toLocaleDateString('hu-HU') : 'N/A';
+                    
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i class="${service.icon || 'fas fa-server'}" style="color: #17a2b8;"></i>
+                                ${service.name}
+                            </div>
+                        </div>
+                        <div class="card-subtitle">${service.description}</div>
+                        <div style="margin-top: 15px;">
+                            <span class="status ${statusClass}">${statusText}</span>
+                            <div style="margin-top: 10px; color: #6c757d; font-size: 14px;">
+                                Következő számlázás: ${nextBilling}
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+                
+                console.log('⚙️ Szolgáltatások betöltve:', snapshot.size);
+            } catch (error) {
+                console.error('Szolgáltatások betöltési hiba:', error);
+            }
+        }
+
+// A tickets betöltés befejezése (a félbeszakadt rész folytatása)
+async function loadTickets(userId) {
+    try {
+        const snapshot = await db.collection('tickets').where('userId', '==', userId).orderBy('createdAt', 'desc').get();
+        const tableBody = document.getElementById('ticketsTable');
+        tableBody.innerHTML = '';
+        
+        snapshot.forEach(doc => {
+            const ticket = doc.data();
+            const row = document.createElement('tr');
+            
+            const priorityClass = ticket.priority === 'urgent' ? 'overdue' : 
+                                 ticket.priority === 'high' ? 'pending' : 'paid';
+            
+            const priorityText = ticket.priority === 'urgent' ? 'Sürgős' : 
+                                ticket.priority === 'high' ? 'Magas' : 'Normál';
+            
+            const statusClass = ticket.status === 'open' ? 'pending' : 
+                               ticket.status === 'in_progress' ? 'pending' : 'paid';
+            
+            const statusText = ticket.status === 'open' ? 'Nyitott' : 
+                              ticket.status === 'in_progress' ? 'Folyamatban' : 'Lezárt';
+            
+            row.innerHTML = `
+                <td>#${ticket.ticketNumber}</td>
+                <td>${ticket.subject}</td>
+                <td><span class="status ${priorityClass}">${priorityText}</span></td>
+                <td><span class="status ${statusClass}">${statusText}</span></td>
+                <td>${new Date(ticket.createdAt.seconds * 1000).toLocaleDateString('hu-HU')}</td>
+                <td>
+                    <button class="btn btn-sm btn-primary" onclick="viewTicket('${doc.id}')">Megtekint</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
         });
-    </script>
+        
+        console.log('🎫 Jegyek betöltve:', snapshot.size);
+    } catch (error) {
+        console.error('Jegyek betöltési hiba:', error);
+    }
+}
+
+async function loadActivities(userId) {
+    try {
+        const snapshot = await db.collection('activities').where('userId', '==', userId).orderBy('date', 'desc').limit(10).get();
+        const tableBody = document.getElementById('activitiesTable');
+        tableBody.innerHTML = '';
+        
+        snapshot.forEach(doc => {
+            const activity = doc.data();
+            const row = document.createElement('tr');
+            
+            const statusClass = activity.status === 'Kész' ? 'paid' : 
+                               activity.status === 'Függőben' ? 'pending' : 'pending';
+            
+            row.innerHTML = `
+                <td>${new Date(activity.date.seconds * 1000).toLocaleDateString('hu-HU')}</td>
+                <td>${activity.description}</td>
+                <td><span class="status ${statusClass}">${activity.status}</span></td>
+            `;
+            tableBody.appendChild(row);
+        });
+        
+        console.log('📋 Tevékenységek betöltve:', snapshot.size);
+    } catch (error) {
+        console.error('Tevékenységek betöltési hiba:', error);
+    }
+}
+
+// Navigáció kezelése
+function showSection(sectionId) {
+    // Összes szekció elrejtése
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => section.classList.add('hidden'));
+    
+    // Aktív nav elem eltávolítása
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => item.classList.remove('active'));
+    
+    // Kiválasztott szekció megjelenítése
+    document.getElementById(sectionId).classList.remove('hidden');
+    
+    // Aktív nav elem beállítása
+    event.target.closest('.nav-item').classList.add('active');
+}
+
+// Profil form kezelése
+document.getElementById('profileForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const user = auth.currentUser;
+    if (!user) return;
+    
+    try {
+        const profileData = {
+            companyName: document.getElementById('companyName').value,
+            phone: document.getElementById('phone').value,
+            address: document.getElementById('address').value,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        
+        await db.collection('users').doc(user.uid).update(profileData);
+        
+        // Siker üzenet megjelenítése
+        showNotification('Profil sikeresen mentve!', 'success');
+        
+        console.log('✅ Profil mentve');
+    } catch (error) {
+        console.error('Profil mentési hiba:', error);
+        showNotification('Hiba a profil mentése során!', 'error');
+    }
+});
+
+// Beállítások form kezelése
+document.getElementById('settingsForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const user = auth.currentUser;
+    if (!user) return;
+    
+    try {
+        const settings = {
+            emailInvoice: document.getElementById('emailInvoice').checked,
+            emailTicket: document.getElementById('emailTicket').checked,
+            smsNotifications: document.getElementById('smsNotifications').checked
+        };
+        
+        await db.collection('users').doc(user.uid).update({
+            settings: settings,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        
+        showNotification('Beállítások sikeresen mentve!', 'success');
+        
+        console.log('✅ Beállítások mentve');
+    } catch (error) {
+        console.error('Beállítások mentési hiba:', error);
+        showNotification('Hiba a beállítások mentése során!', 'error');
+    }
+});
+
+// Értesítés megjelenítése
+function showNotification(message, type = 'info') {
+    // Létrehozzuk az értesítési elemet
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
+        color: white;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        z-index: 1000;
+        font-weight: 500;
+        animation: slideIn 0.3s ease-out;
+    `;
+    notification.textContent = message;
+    
+    // CSS animáció hozzáadása
+    if (!document.getElementById('notification-styles')) {
+        const style = document.createElement('style');
+        style.id = 'notification-styles';
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    document.body.appendChild(notification);
+    
+    // 3 másodperc után eltávolítás
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease-in';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
+}
+
+// Segédfüggvények a műveletek kezeléséhez
+function viewInvoice(invoiceId) {
+    console.log('Számla megtekintése:', invoiceId);
+    showNotification('Számla megtekintés funkció fejlesztés alatt', 'info');
+}
+
+function downloadInvoice(invoiceId) {
+    console.log('Számla letöltése:', invoiceId);
+    showNotification('Számla letöltés funkció fejlesztés alatt', 'info');
+}
+
+function viewTicket(ticketId) {
+    console.log('Jegy megtekintése:', ticketId);
+    showNotification('Jegy megtekintés funkció fejlesztés alatt', 'info');
+}
+
+// Valós idejű adatfrissítés beállítása
+function setupRealTimeListeners(userId) {
+    // Számlák valós idejű figyelése
+    db.collection('invoices').where('userId', '==', userId)
+        .onSnapshot((snapshot) => {
+            console.log('📊 Számlák frissítve valós időben');
+            loadInvoices(userId);
+            loadDashboardData(userId);
+        });
+    
+    // Szolgáltatások valós idejű figyelése  
+    db.collection('services').where('userId', '==', userId)
+        .onSnapshot((snapshot) => {
+            console.log('⚙️ Szolgáltatások frissítve valós időben');
+            loadServices(userId);
+            loadDashboardData(userId);
+        });
+    
+    // Jegyek valós idejű figyelése
+    db.collection('tickets').where('userId', '==', userId)
+        .onSnapshot((snapshot) => {
+            console.log('🎫 Jegyek frissítve valós időben');
+            loadTickets(userId);
+            loadDashboardData(userId);
+        });
+    
+    // Tevékenységek valós idejű figyelése
+    db.collection('activities').where('userId', '==', userId)
+        .onSnapshot((snapshot) => {
+            console.log('📋 Tevékenységek frissítve valós időben');
+            loadActivities(userId);
+        });
+}
+
+// A valós idejű figyelők beállítása a sikeres authentikáció után
+auth.onAuthStateChanged(async (user) => {
+    console.log('Auth state changed:', user);
+    
+    if (user) {
+        console.log('✅ Sikeres authentikáció:', user.email);
+        document.getElementById('userEmail').textContent = user.email;
+        document.getElementById('profileEmail').value = user.email;
+        
+        await initializeUserData(user.uid, user.email);
+        await loadUserData(user.uid);
+        
+        // Valós idejű figyelők beállítása
+        setupRealTimeListeners(user.uid);
+        
+    } else {
+        console.log('❌ Nincs bejelentkezett felhasználó');
+        setTimeout(() => {
+            window.location.href = 'bejelentkezes.html';
+        }, 500);
+    }
+}, (error) => {
+    console.error('Auth state change error:', error);
+    alert('Hiba az authentikáció során: ' + error.message);
+});
+
+// Inicializálás befejezése
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 Dashboard inicializálva');
+});
+</script>
 </body>
 </html>
