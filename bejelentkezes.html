@@ -133,6 +133,7 @@
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s ease;
+            cursor: pointer;
         }
 
         .forgot-password:hover {
@@ -221,6 +222,12 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
+        .social-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .register-link {
             text-align: center;
             color: #666;
@@ -231,6 +238,7 @@
             color: #667eea;
             text-decoration: none;
             font-weight: 600;
+            cursor: pointer;
         }
 
         .register-link a:hover {
@@ -298,7 +306,7 @@
 <body>
     <div class="login-container">
         <div class="logo">
-            <img width="220" height="auto" viewBox="0 0 400 100" src="images/bitnova logo.png">
+            <h1>Üdvözlöm</h1>
             <p>Jelentkezzen be fiókjába</p>
         </div>
 
@@ -322,30 +330,41 @@
                     <input type="checkbox" id="remember" name="remember">
                     <span>Emlékezzen rám</span>
                 </label>
-                <a href="#" class="forgot-password">Elfelejtett jelszó?</a>
+                <span class="forgot-password" onclick="forgotPassword()">Elfelejtett jelszó?</span>
             </div>
 
             <button type="submit" class="login-btn" id="loginBtn">
                 Bejelentkezés
             </button>
         </form>
-<!--
-        <div class="divider">
-            <span>vagy</span>
-        </div>
 
-        <div class="social-login">
-            <button class="social-btn" onclick="socialLogin('google')">🌐</button>
-            <button class="social-btn" onclick="socialLogin('facebook')">📘</button>
-            <button class="social-btn" onclick="socialLogin('apple')">🍎</button>
-        </div>
--->
         <div class="register-link">
-            Még nincs fiókja? <a href="#">Regisztráljon itt</a>
+            Még nincs fiókja? <a onclick="showRegister()">Regisztráljon itt</a>
         </div>
     </div>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
     <script>
+        // Firebase konfiguráció - CSERÉLD KI A SAJÁT ÉRTÉKEIDDEL!
+        const firebaseConfig = {
+            apiKey: "your-api-key",
+            authDomain: "your-project.firebaseapp.com",
+            projectId: "your-project-id",
+            storageBucket: "your-project.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "your-app-id"
+        };
+
+        // Firebase inicializálása
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Bejelentkezés perzisztencia beállítása
+        auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
         // Jelszó mutatása/elrejtése
         function togglePassword() {
             const passwordInput = document.getElementById('password');
@@ -367,7 +386,6 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const remember = document.getElementById('remember').checked;
-            const loginBtn = document.getElementById('loginBtn');
             
             // Validáció
             if (!email || !password) {
@@ -380,36 +398,108 @@
                 return;
             }
             
-            // Gomb letiltása és betöltés jelzése
-            loginBtn.disabled = true;
-            loginBtn.textContent = 'Bejelentkezés...';
-            
-            // Itt hívd meg a saját bejelentkezési logikádat
             performLogin(email, password, remember);
         });
 
-        // Bejelentkezési logika - ezt kell testre szabnod
-        function performLogin(email, password, remember) {
-            // Szimulált API hívás - cseréld ki a saját backend logikádra
-            setTimeout(() => {
-                // Példa: sikeres bejelentkezés
-                if (email === 'test@example.com' && password === 'password') {
-                    showSuccess('Sikeres bejelentkezés! Átirányítás...');
-                    setTimeout(() => {
-                        // Átirányítás a dashboard-ra vagy főoldalra
-                        window.location.href = '/dashboard';
-                    }, 1500);
-                } else {
-                    showError('Hibás e-mail cím vagy jelszó!');
-                    resetLoginButton();
-                }
-            }, 1000);
+        // Firebase bejelentkezés
+        async function performLogin(email, password, remember) {
+            const loginBtn = document.getElementById('loginBtn');
+            
+            try {
+                // Gomb letiltása és betöltés jelzése
+                loginBtn.disabled = true;
+                loginBtn.textContent = 'Bejelentkezés...';
+                
+                // Perzisztencia beállítása a "Emlékezzen rám" alapján
+                const persistence = remember ? 
+                    firebase.auth.Auth.Persistence.LOCAL : 
+                    firebase.auth.Auth.Persistence.SESSION;
+                
+                await auth.setPersistence(persistence);
+                
+                // Bejelentkezés Firebase-zel
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                showSuccess('Sikeres bejelentkezés! Átirányítás...');
+                
+                // Átirányítás
+                setTimeout(() => {
+                    window.location.href = '/dashboard.html'; // Cseréld ki a saját útvonalra
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Bejelentkezési hiba:', error);
+                handleAuthError(error);
+                resetLoginButton();
+            }
         }
 
-        // Közösségi bejelentkezés
-        function socialLogin(provider) {
-            showError('A közösségi bejelentkezés még nem elérhető.');
-            // Itt implementálhatod a Google, Facebook, Apple bejelentkezést
+        
+
+        // Elfelejtett jelszó
+        async function forgotPassword() {
+            const email = document.getElementById('email').value;
+            
+            if (!email) {
+                showError('Kérjük, adja meg az e-mail címét először!');
+                return;
+            }
+            
+            if (!isValidEmail(email)) {
+                showError('Kérjük, adjon meg érvényes e-mail címet!');
+                return;
+            }
+            
+            try {
+                await auth.sendPasswordResetEmail(email);
+                showSuccess('Jelszó visszaállítási e-mail elküldve! Ellenőrizze postafiókját.');
+            } catch (error) {
+                console.error('Jelszó visszaállítási hiba:', error);
+                handleAuthError(error);
+            }
+        }
+
+        // Regisztráció megjelenítése (példa)
+        function showRegister() {
+            // Itt átirányíthatod a regisztrációs oldalra
+            window.location.href = '/register.html';
+        }
+
+        // Auth hibák kezelése
+        function handleAuthError(error) {
+            let message = 'Ismeretlen hiba történt.';
+            
+            switch (error.code) {
+                case 'auth/user-not-found':
+                    message = 'Nem található felhasználó ezzel az e-mail címmel.';
+                    break;
+                case 'auth/wrong-password':
+                    message = 'Hibás jelszó.';
+                    break;
+                case 'auth/invalid-email':
+                    message = 'Érvénytelen e-mail cím.';
+                    break;
+                case 'auth/user-disabled':
+                    message = 'Ez a fiók le van tiltva.';
+                    break;
+                case 'auth/too-many-requests':
+                    message = 'Túl sok sikertelen kísérlet. Próbálja újra később.';
+                    break;
+                case 'auth/network-request-failed':
+                    message = 'Hálózati hiba. Ellenőrizze internetkapcsolatát.';
+                    break;
+                case 'auth/popup-closed-by-user':
+                    message = 'Bejelentkezési ablak bezárva.';
+                    break;
+                case 'auth/popup-blocked':
+                    message = 'Popup ablak blokkolva. Engedélyezze a popup-okat.';
+                    break;
+                default:
+                    message = error.message || 'Bejelentkezési hiba történt.';
+            }
+            
+            showError(message);
         }
 
         // Hibaüzenet megjelenítése
@@ -440,6 +530,19 @@
             loginBtn.disabled = false;
             loginBtn.textContent = 'Bejelentkezés';
         }
+
+        // Auth állapot figyelése
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // Felhasználó be van jelentkezve
+                console.log('Felhasználó bejelentkezve:', user.email);
+                // Itt átirányíthatod a dashboard-ra, ha már be van jelentkezve
+                // window.location.href = '/dashboard.html';
+            } else {
+                // Felhasználó nincs bejelentkezve
+                console.log('Felhasználó nincs bejelentkezve');
+            }
+        });
 
         // Enter billentyű kezelése
         document.addEventListener('keypress', function(e) {
