@@ -450,24 +450,8 @@
             </button>
         </form>
 
-        <div class="divider">
-            <span>vagy</span>
-        </div>
-
-        <div class="social-login">
-            <button class="social-btn google" onclick="socialRegister('google')">
-                🌐 Regisztráció Google-lel
-            </button>
-            <button class="social-btn facebook" onclick="socialRegister('facebook')">
-                📘 Regisztráció Facebook-kal
-            </button>
-            <button class="social-btn apple" onclick="socialRegister('apple')">
-                🍎 Regisztráció Apple-lel
-            </button>
-        </div>
-
         <div class="login-link">
-            Már van fiókja? <a onclick="goToLogin()">Jelentkezzen be itt</a>
+            Már van fiókja? <a href="bejelentkezes.html">Jelentkezzen be itt</a>
         </div>
     </div>
 
@@ -499,8 +483,6 @@
 
         // Globális függvények
         window.performRegister = performRegister;
-        window.socialRegister = socialRegister;
-        window.goToLogin = goToLogin;
 
         // Regisztrációs logika
         async function performRegister(fullName, email, password) {
@@ -539,47 +521,6 @@
             }
         }
 
-        // Közösségi regisztráció
-        async function socialRegister(provider) {
-            try {
-                let authProvider;
-                
-                switch(provider) {
-                    case 'google':
-                        authProvider = googleProvider;
-                        break;
-                    case 'facebook':
-                        authProvider = facebookProvider;
-                        break;
-                    default:
-                        showError('Ezt a bejelentkezési módot még nem támogatjuk.');
-                        return;
-                }
-
-                const result = await signInWithPopup(auth, authProvider);
-                const user = result.user;
-
-                // Felhasználó adatok mentése Firestore-ba
-                await setDoc(doc(db, 'users', user.uid), {
-                    fullName: user.displayName,
-                    email: user.email,
-                    createdAt: serverTimestamp(),
-                    emailVerified: user.emailVerified,
-                    photoURL: user.photoURL,
-                    provider: provider,
-                    newsletter: false
-                }, { merge: true });
-
-                showSuccess('Sikeres regisztráció! Átirányítás...');
-                setTimeout(() => {
-                    window.location.href = '/dashboard.html';
-                }, 1500);
-
-            } catch (error) {
-                console.error('Közösségi regisztrációs hiba:', error);
-                handleAuthError(error);
-            }
-        }
 
         // Hibaüzenetek kezelése
         function handleAuthError(error) {
@@ -612,10 +553,6 @@
             resetRegisterButton();
         }
 
-        // Átirányítás bejelentkezéshez
-        function goToLogin() {
-            window.location.href = '/bejelentkezes.html';
-        }
 
         // Felhasználói élmény függvények
         window.showError = showError;
