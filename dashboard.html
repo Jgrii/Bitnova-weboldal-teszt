@@ -628,15 +628,15 @@
 
     <script>
         // Firebase Configuration - Add your config here
-         const firebaseConfig = {
-            apiKey: "AIzaSyAXnAo-7BF6iKjNzYr0uoJbhlpCWNaS9s4",
-            authDomain: "bitnova-backend.firebaseapp.com",
-            projectId: "bitnova-backend",
-            storageBucket: "bitnova-backend.firebasestorage.app",
-            messagingSenderId: "312941837204",
-            appId: "1:312941837204:web:f6e3ff0d44cab13f30ed81",
-            measurementId: "G-VBW8LX8LDE"
-          };
+        const firebaseConfig = {
+            // Add your Firebase config object here
+            apiKey: "your-api-key",
+            authDomain: "your-project.firebaseapp.com",
+            projectId: "your-project-id",
+            storageBucket: "your-project.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "your-app-id"
+        };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
@@ -647,18 +647,22 @@
             if (user) {
                 document.getElementById('userEmail').textContent = user.email;
                 document.getElementById('profileEmail').value = user.email;
+                console.log('Bejelentkezett felhasználó:', user.email);
             } else {
-                // Redirect to login page or show login form
-                window.location.href = 'bejelentkezes.html'; // You'll need to create this
+                // Redirect to bejelentkezes.html if not authenticated
+                console.log('Nincs bejelentkezett felhasználó, átirányítás...');
+                window.location.href = 'bejelentkezes.html';
             }
         });
 
         // Logout function
         function logout() {
             auth.signOut().then(() => {
+                console.log('Sikeres kijelentkezés');
                 window.location.href = 'bejelentkezes.html';
             }).catch((error) => {
-                console.error('Logout error:', error);
+                console.error('Kijelentkezési hiba:', error);
+                alert('Hiba történt a kijelentkezés során: ' + error.message);
             });
         }
 
@@ -677,10 +681,27 @@
             event.target.classList.add('active');
         }
 
-        // Add some interactivity
+        // Add some interactivity and check URL parameters
         document.addEventListener('DOMContentLoaded', function() {
-            // Add loading states, form submissions, etc.
-            console.log('BitNova Dashboard loaded');
+            console.log('BitNova Dashboard betöltve');
+            
+            // Check if user came from login page
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('login') === 'success') {
+                // Show success message
+                const alert = document.createElement('div');
+                alert.className = 'alert alert-success';
+                alert.innerHTML = '<i class="fas fa-check-circle"></i> Sikeres bejelentkezés! Üdvözöljük a BitNova Dashboard-on.';
+                document.querySelector('.content').insertBefore(alert, document.querySelector('.content').firstChild);
+                
+                // Remove alert after 5 seconds
+                setTimeout(() => {
+                    alert.remove();
+                }, 5000);
+                
+                // Clean URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
         });
     </script>
 </body>
