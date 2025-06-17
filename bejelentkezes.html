@@ -358,7 +358,7 @@
             appId: "1:312941837204:web:f6e3ff0d44cab13f30ed81",
             measurementId: "G-VBW8LX8LDE"
           };
-
+        
         // Firebase inicializálása
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
@@ -546,6 +546,16 @@
                 document.getElementById('loginForm').dispatchEvent(new Event('submit'));
             }
         });
+
+        // Bejelentkezés után a bejelentkezes.html-ben:
+        firebase.auth().signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // Sikeres bejelentkezés
+            window.location.href = 'dashboard.html?login=success';
+          })
+          .catch((error) => {
+            // Hibakezelés
+          });
     </script>
 </body>
 </html>
