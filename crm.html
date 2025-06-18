@@ -642,13 +642,300 @@
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     totalRevenue: 450000
                 },
+            ];
+            // Leadek példaadatok
+            const leads = [
                 {
                     userId: userId,
-                    name: 'Szabó Anna',
-                    email: 'szabo.anna@webstudio.hu',
-                    phone: '+36 30 987 6543',
-                    company: 'WebStudio',
-                    status: 'active',
-                    notes: 'Webfejlesztő ügynökség',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    totalRevenue: 
+                    name: 'Tóth Eszter',
+                    email: 'toth.eszter@company.com',
+                    phone: '+36 30 123 4567',
+                    source: 'website',
+                    rating: 'hot',
+                    status: 'new',
+                    notes: 'Weboldal építést kért',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                },
+                {
+                    userId: userId,
+                    name: 'Molnár Zoltán',
+                    email: 'molnar.zoltan@firm.hu',
+                    phone: '+36 20 987 6543',
+                    source: 'referral',
+                    rating: 'warm',
+                    status: 'contacted',
+                    notes: 'Ajánlásból érkezett',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                }
+            ];
+            
+            // Üzletek példaadatok
+            const deals = [
+                {
+                    userId: userId,
+                    name: 'TechSoft prémium csomag',
+                    customerId: '', // majd customer ID-val töltjük fel
+                    customerName: 'Nagy Péter',
+                    value: 850000,
+                    stage: 'proposal',
+                    probability: 75,
+                    closeDate: new Date('2025-07-15'),
+                    notes: 'Árról még egyeztetni kell',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                },
+                {
+                    userId: userId,
+                    name: 'WebStudio maintenance',
+                    customerId: '',
+                    customerName: 'Szabó Anna',
+                    value: 120000,
+                    stage: 'negotiation',
+                    probability: 60,
+                    closeDate: new Date('2025-06-30'),
+                    notes: 'Éves karbantartási szerződés',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                }
+            ];
+            
+            // Feladatok példaadatok
+            const tasks = [
+                {
+                    userId: userId,
+                    title: 'Nagy Péter felhívása',
+                    contactName: 'Nagy Péter',
+                    dueDate: new Date('2025-06-20T10:00:00'),
+                    priority: 'high',
+                    type: 'call',
+                    status: 'pending',
+                    description: 'Ajánlat egyeztetése',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                },
+                {
+                    userId: userId,
+                    title: 'Molnár Zoltán email küldése',
+                    contactName: 'Molnár Zoltán',
+                    dueDate: new Date('2025-06-19T14:00:00'),
+                    priority: 'medium',
+                    type: 'email',
+                    status: 'pending',
+                    description: 'Bemutatkozó email és ajánlat',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                }
+            ];
+            
+            // Adatok mentése Firestore-ba
+            for (const customer of customers) {
+                await db.collection('crm_customers').add(customer);
+            }
+            for (const lead of leads) {
+                await db.collection('crm_leads').add(lead);
+            }
+            for (const deal of deals) {
+                await db.collection('crm_deals').add(deal);
+            }
+            for (const task of tasks) {
+                await db.collection('crm_tasks').add(task);
+            }
+
+        async function loadCRMData(userId) {
+            try {
+                // Dashboard statisztikák betöltése
+                await loadDashboardStats(userId);
+                
+                // Táblázatok betöltése
+                await loadCustomersTable(userId);
+                await loadLeadsTable(userId);
+                await loadDealsTable(userId);
+                await loadTasksTable(userId);
+                await loadReports(userId);
+                
+            } catch (error) {
+                console.error('Adatbetöltési hiba:', error);
+            }
+        }
+        
+        async function loadDashboardStats(userId) {
+            // Ügyfelek száma
+            const customersSnapshot = await db.collection('crm_customers').where('userId', '==', userId).get();
+            document.getElementById('totalCustomers').textContent = customersSnapshot.size;
+            document.getElementById('customersSummary').textContent = `${customersSnapshot.docs.filter(doc => doc.data().status === 'active').length} aktív`;
+        
+            // Leadek száma
+            const leadsSnapshot = await db.collection('crm_leads').where('userId', '==', userId).where('status', '!=', 'converted').get();
+            document.getElementById('activeLeads').textContent = leadsSnapshot.size;
+            document.getElementById('leadsSummary').textContent = `${leadsSnapshot.docs.filter(doc => doc.data().rating === 'hot').length} forró lead`;
+        
+            // Nyitott üzletek
+            const dealsSnapshot = await db.collection('crm_deals').where('userId', '==', userId).where('stage', 'not-in', ['closed_won', 'closed_lost']).get();
+            document.getElementById('openDeals').textContent = dealsSnapshot.size;
+            const totalDealValue = dealsSnapshot.docs.reduce((sum, doc) => sum + (doc.data().value || 0), 0);
+            document.getElementById('dealsSummary').textContent = `${formatCurrency(totalDealValue)} összérték`;
+        
+            // Havi bevétel
+            const currentMonth = new Date();
+            const firstDayOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
+            const wonDealsSnapshot = await db.collection('crm_deals')
+                .where('userId', '==', userId)
+                .where('stage', '==', 'closed_won')
+                .where('closeDate', '>=', firstDayOfMonth)
+                .get();
+            
+            const monthlyRevenue = wonDealsSnapshot.docs.reduce((sum, doc) => sum + (doc.data().value || 0), 0);
+            document.getElementById('monthlyRevenue').textContent = formatCurrency(monthlyRevenue);
+            document.getElementById('revenueSummary').textContent = `${wonDealsSnapshot.size} lezárt üzlet`;
+        }
+
+        async function loadCustomersTable(userId) {
+            const snapshot = await db.collection('crm_customers').where('userId', '==', userId).orderBy('createdAt', 'desc').get();
+            const tbody = document.getElementById('customersTable');
+            const recentTbody = document.getElementById('recentCustomersTable');
+            
+            tbody.innerHTML = '';
+            recentTbody.innerHTML = '';
+            
+            snapshot.docs.forEach((doc, index) => {
+                const customer = doc.data();
+                const row = createCustomerRow(doc.id, customer);
+                tbody.appendChild(row);
+                
+                // Első 5 a recent táblába
+                if (index < 5) {
+                    const recentRow = createRecentCustomerRow(customer);
+                    recentTbody.appendChild(recentRow);
+                }
+            });
+        }
+        
+        function createCustomerRow(id, customer) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${customer.name}</td>
+                <td>${customer.email}</td>
+                <td>${customer.phone || '-'}</td>
+                <td>${customer.company || '-'}</td>
+                <td><span class="status ${customer.status}">${getStatusText(customer.status)}</span></td>
+                <td>${formatDate(customer.createdAt?.toDate())}</td>
+                <td>
+                    <button class="btn btn-sm btn-primary" onclick="editCustomer('${id}')">Szerkeszt</button>
+                    <button class="btn btn-sm btn-delete" onclick="deleteCustomer('${id}')">Törlés</button>
+                </td>
+            `;
+            return row;
+        }
+
+        // Szekció váltás
+        function showSection(sectionName) {
+            // Összes szekció elrejtése
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Kiválasztott szekció megjelenítése
+            document.getElementById(sectionName).classList.remove('hidden');
+            
+            // Navigációs elemek frissítése
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+        
+        // Modal függvények
+        function openCustomerModal(customerId = null) {
+            document.getElementById('customerModal').style.display = 'flex';
+            if (customerId) {
+                loadCustomerForEdit(customerId);
+                document.getElementById('customerModalTitle').textContent = 'Ügyfél szerkesztése';
+            } else {
+                document.getElementById('customerForm').reset();
+                document.getElementById('customerModalTitle').textContent = 'Új ügyfél';
+            }
+        }
+        
+        function closeCustomerModal() {
+            document.getElementById('customerModal').style.display = 'none';
+        }
+        
+        // Similar functions for other modals...
+
+
+        // Form submit handlerek
+        document.getElementById('customerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await saveCustomer();
+        });
+        
+        async function saveCustomer() {
+            const formData = {
+                userId: auth.currentUser.uid,
+                name: document.getElementById('customerName').value,
+                email: document.getElementById('customerEmail').value,
+                phone: document.getElementById('customerPhone').value,
+                company: document.getElementById('customerCompany').value,
+                status: document.getElementById('customerStatus').value,
+                notes: document.getElementById('customerNotes').value,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                totalRevenue: 0
+            };
+            
+            try {
+                await db.collection('crm_customers').add(formData);
+                closeCustomerModal();
+                await loadCustomersTable(auth.currentUser.uid);
+                await loadDashboardStats(auth.currentUser.uid);
+            } catch (error) {
+                console.error('Mentési hiba:', error);
+                alert('Hiba történt a mentés során!');
+            }
+        }
+        
+        async function deleteCustomer(customerId) {
+            if (confirm('Biztosan törölni szeretné ezt az ügyfelet?')) {
+                try {
+                    await db.collection('crm_customers').doc(customerId).delete();
+                    await loadCustomersTable(auth.currentUser.uid);
+                    await loadDashboardStats(auth.currentUser.uid);
+                } catch (error) {
+                    console.error('Törlési hiba:', error);
+                }
+            }
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('hu-HU', {
+                style: 'currency',
+                currency: 'HUF'
+            }).format(amount);
+        }
+        
+        function formatDate(date) {
+            if (!date) return '-';
+            return new Intl.DateTimeFormat('hu-HU').format(date);
+        }
+        
+        function getStatusText(status) {
+            const statusMap = {
+                'active': 'Aktív',
+                'inactive': 'Inaktív',
+                'prospect': 'Potenciális',
+                'new': 'Új',
+                'contacted': 'Kapcsolatba lépve',
+                'qualified': 'Kvalifikált',
+                'converted': 'Konvertált'
+            };
+            return statusMap[status] || status;
+        }
+        
+        // Valós idejű listener
+        function setupCRMRealTimeListeners(userId) {
+            // Ügyfelek változásának figyelése
+            db.collection('crm_customers').where('userId', '==', userId)
+                .onSnapshot(() => {
+                    loadDashboardStats(userId);
+                    if (!document.getElementById('customers').classList.contains('hidden')) {
+                        loadCustomersTable(userId);
+                    }
+                });
+            
+            // Hasonlóan a többi kollekcióhoz...
+        }
