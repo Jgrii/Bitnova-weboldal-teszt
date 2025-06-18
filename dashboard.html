@@ -734,12 +734,22 @@ async function loadTickets(userId) {
             const statusText = ticket.status === 'open' ? 'Nyitott' : 
                               ticket.status === 'in_progress' ? 'Folyamatban' : 'Lezárt';
             
+            // Timestamp biztonságos kezelése
+            let createdDate = 'N/A';
+            if (ticket.createdAt) {
+                if (ticket.createdAt.seconds) {
+                    createdDate = new Date(ticket.createdAt.seconds * 1000).toLocaleDateString('hu-HU');
+                } else if (ticket.createdAt.toDate) {
+                    createdDate = ticket.createdAt.toDate().toLocaleDateString('hu-HU');
+                }
+            }
+            
             row.innerHTML = `
                 <td>#${ticket.ticketNumber}</td>
                 <td>${ticket.subject}</td>
                 <td><span class="status ${priorityClass}">${priorityText}</span></td>
                 <td><span class="status ${statusClass}">${statusText}</span></td>
-                <td>${new Date(ticket.createdAt.seconds * 1000).toLocaleDateString('hu-HU')}</td>
+                <td>${createdDate}</td>
                 <td>
                     <button class="btn btn-sm btn-primary" onclick="viewTicket('${doc.id}')">Megtekint</button>
                 </td>
@@ -750,6 +760,9 @@ async function loadTickets(userId) {
         console.log('🎫 Jegyek betöltve:', snapshot.size);
     } catch (error) {
         console.error('Jegyek betöltési hiba:', error);
+        // Üres táblázat megjelenítése hiba esetén
+        const tableBody = document.getElementById('ticketsTable');
+        tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #6c757d;">Nincsenek támogatási jegyek</td></tr>';
     }
 }
 
