@@ -322,6 +322,31 @@
         </div>
     </div>
 
+        <!-- Törlés megerősítő modal -->
+    <div id="deleteConfirmModal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 450px;">
+            <div class="modal-header" style="background-color: #dc3545; color: white;">
+                <h3><i class="fas fa-exclamation-triangle"></i> Jegy törlése</h3>
+                <span class="close" onclick="closeDeleteConfirmModal()">&times;</span>
+            </div>
+            <div class="modal-body" style="padding: 30px; text-align: center;">
+                <i class="fas fa-trash-alt" style="font-size: 48px; color: #dc3545; margin-bottom: 20px;"></i>
+                <h4 style="margin-bottom: 15px; color: #2c3e50;">Biztosan törölni szeretné?</h4>
+                <p style="color: #6c757d; margin-bottom: 0;">
+                    Ez a művelet visszavonhatatlan. A támogatási jegy véglegesen törlődik.
+                </p>
+            </div>
+            <div class="modal-footer" style="gap: 10px;">
+                <button type="button" class="btn btn-secondary" onclick="closeDeleteConfirmModal()">
+                    <i class="fas fa-times"></i> Mégse
+                </button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn" onclick="confirmDelete()">
+                    <i class="fas fa-trash"></i> Igen, törlöm
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.15.0/firebase-app-compat.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.15.0/firebase-auth-compat.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.15.0/firebase-firestore-compat.min.js"></script>
@@ -1036,14 +1061,19 @@ function closeNewTicketModal() {
 // Modal bezárása ESC gombbal vagy háttérre kattintással
 window.onclick = function(event) {
     const modal = document.getElementById('newTicketModal');
+    const deleteModal = document.getElementById('deleteConfirmModal');
     if (event.target == modal) {
         closeNewTicketModal();
+    }
+    if (event.target == deleteModal) {
+        closeDeleteConfirmModal();
     }
 }
 
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape') {
         closeNewTicketModal();
+        closeDeleteConfirmModal();
     }
 });
 
@@ -1130,6 +1160,72 @@ document.getElementById('newTicketForm').addEventListener('submit', async (e) =>
         }
     }
 });
+
+// Globális változó a törlendő jegy ID tárolásához
+let ticketToDelete = null;
+
+// Törlés modal megnyitása
+function openDeleteConfirmModal(ticketId) {
+    ticketToDelete = ticketId;
+    document.getElementById('deleteConfirmModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+// Törlés modal bezárása
+function closeDeleteConfirmModal() {
+    ticketToDelete = null;
+    document.getElementById('deleteConfirmModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Törlés megerősítése
+async function confirmDelete() {
+    if (!ticketToDelete) return;
+    
+    try {
+        // Loading állapot
+        const confirmBtn = document.getElementById('confirmDeleteBtn');
+        const originalText = confirmBtn.innerHTML;
+        confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Törlés...';
+        confirmBtn.disabled = true;
+        
+        // Jegy törlése Firestore-ból
+        await db.collection('tickets').doc(ticketToDelete).delete();
+        console.log('✅ Jegy törölve:', ticketToDelete);
+        
+        // Aktivitás naplózása
+        const user = auth.currentUser;
+        if (user) {
+            await db.collection('activities').add({
+                userId: user.uid,
+                description: 'Támogatási jegy törölve',
+                type: 'ticket',
+                status: 'Törölve',
+                date: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        }
+        
+        // Siker üzenet
+        showNotification('Támogatási jegy sikeresen törölve!', 'success');
+        
+        // Modal bezárása
+        closeDeleteConfirmModal();
+        
+    } catch (error) {
+        console.error('Jegy törlési hiba:', error);
+        showNotification('Hiba a jegy törlése során!', 'error');
+        
+        // Gomb visszaállítása hiba esetén
+        const confirmBtn = document.getElementById('confirmDeleteBtn');
+        confirmBtn.innerHTML = '<i class="fas fa-trash"></i> Igen, törlöm';
+        confirmBtn.disabled = false;
+    }
+}
+
+// Eredeti deleteTicket függvény módosítása
+function deleteTicket(ticketId) {
+    openDeleteConfirmModal(ticketId);
+}
 
 
 // Inicializálás befejezése
