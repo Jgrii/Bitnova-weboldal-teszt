@@ -941,10 +941,51 @@ function viewTicket(ticketId) {
     showNotification('Jegy megtekintés funkció fejlesztés alatt', 'info');
 }
 
-function deleteTicket(ticketId){
-    deleteTicket(ticketId)
+async function deleteTicket(ticketId) {
+    // Megerősítés kérése
+    if (!confirm('Biztosan törölni szeretné ezt a támogatási jegyet?')) {
+        return;
+    }
+    
+    try {
+        // Loading állapot (ha van gomb)
+        const deleteBtn = event?.target;
+        if (deleteBtn) {
+            deleteBtn.textContent = 'Törlés...';
+            deleteBtn.disabled = true;
+        }
+        
+        // Jegy törlése Firestore-ból
+        await db.collection('tickets').doc(ticketId).delete();
+        console.log('✅ Jegy törölve:', ticketId);
+        
+        // Aktivitás naplózása
+        const user = auth.currentUser;
+        if (user) {
+            await db.collection('activities').add({
+                userId: user.uid,
+                description: 'Támogatási jegy törölve',
+                type: 'ticket',
+                status: 'Törölve',
+                date: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        }
+        
+        // Siker üzenet
+        showNotification('Támogatási jegy sikeresen törölve!', 'success');
+        
+    } catch (error) {
+        console.error('Jegy törlési hiba:', error);
+        showNotification('Hiba a jegy törlése során!', 'error');
+    } finally {
+        // Loading állapot visszaállítása
+        if (deleteBtn) {
+            deleteBtn.textContent = 'Törlés';
+            deleteBtn.disabled = false;
+        }
+    }
 }
-
+        
 // Valós idejű adatfrissítés beállítása
 function setupRealTimeListeners(userId) {
     // Számlák valós idejű figyelése
