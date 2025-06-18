@@ -280,6 +280,47 @@
         </div>
     </div>
 
+    <!-- Új jegy modal -->
+    <div id="newTicketModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Új támogatási jegy</h3>
+                <span class="close" onclick="closeNewTicketModal()">&times;</span>
+            </div>
+            <form id="newTicketForm">
+                <div class="form-group">
+                    <label for="ticketSubject">Tárgy *</label>
+                    <input type="text" id="ticketSubject" required>
+                </div>
+                <div class="form-group">
+                    <label for="ticketPriority">Prioritás *</label>
+                    <select id="ticketPriority" required>
+                        <option value="normal">Normál</option>
+                        <option value="high">Magas</option>
+                        <option value="urgent">Sürgős</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="ticketCategory">Kategória</label>
+                    <select id="ticketCategory">
+                        <option value="technical">Technikai probléma</option>
+                        <option value="billing">Számlázás</option>
+                        <option value="general">Általános kérdés</option>
+                        <option value="feature">Új funkció kérése</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="ticketDescription">Részletes leírás *</label>
+                    <textarea id="ticketDescription" rows="5" required placeholder="Írja le részletesen a problémát vagy kérését..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeNewTicketModal()">Mégse</button>
+                    <button type="submit" class="btn btn-primary">Jegy létrehozása</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.15.0/firebase-app-compat.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.15.0/firebase-auth-compat.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.15.0/firebase-firestore-compat.min.js"></script>
