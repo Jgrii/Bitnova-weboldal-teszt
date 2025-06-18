@@ -324,6 +324,8 @@
                 
                 await initializeUserData(user.uid, user.email);
                 await loadUserData(user.uid);
+
+                setupRealTimeListeners(user.uid);
                 
             } else {
                 console.log('❌ Nincs bejelentkezett felhasználó');
@@ -904,31 +906,7 @@ function setupRealTimeListeners(userId) {
         });
 }
 
-// A valós idejű figyelők beállítása a sikeres authentikáció után
-auth.onAuthStateChanged(async (user) => {
-    console.log('Auth state changed:', user);
-    
-    if (user) {
-        console.log('✅ Sikeres authentikáció:', user.email);
-        document.getElementById('userEmail').textContent = user.email;
-        document.getElementById('profileEmail').value = user.email;
-        
-        await initializeUserData(user.uid, user.email);
-        await loadUserData(user.uid);
-        
-        // Valós idejű figyelők beállítása
-        setupRealTimeListeners(user.uid);
-        
-    } else {
-        console.log('❌ Nincs bejelentkezett felhasználó');
-        setTimeout(() => {
-            window.location.href = 'bejelentkezes.html';
-        }, 500);
-    }
-}, (error) => {
-    console.error('Auth state change error:', error);
-    alert('Hiba az authentikáció során: ' + error.message);
-});
+
 
 // Inicializálás befejezése
 document.addEventListener('DOMContentLoaded', () => {
