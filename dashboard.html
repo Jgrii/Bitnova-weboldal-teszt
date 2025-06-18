@@ -90,7 +90,7 @@
                                 </div>
                             </div>
                             <div class="card-value" id="openTickets">Betöltés...</div>
-                            <div class="card-subtitle" id="tickets">Betöltés...</div>
+                            <div class="card-subtitle" id="ticketsSummary">Betöltés...</div>
                         </div>
                     </div>
 
@@ -559,7 +559,7 @@
                 let monthlyCost = 0;
                 let pending = 0, paid = 0;
                 let urgent = 0, normal = 0;
-                let active = 0, inactive = 0;
+                let inactive = 0, active = 0;
                 
                 servicesSnapshot.forEach(doc => {
                     const service = doc.data();
