@@ -75,11 +75,11 @@
                             <div class="card-header">
                                 <div class="card-title">
                                     <i class="fas fa-server" style="color: #17a2b8;"></i>
-                                    Aktív szolgáltatások
+                                    Szolgáltatások
                                 </div>
                             </div>
                             <div class="card-value" id="activeServices">Betöltés...</div>
-                            <div class="card-subtitle">Összes szolgáltatás fut</div>
+                            <div class="card-subtitle" id="servicesSummary">Betöltés...</div>
                         </div>
 
                         <div class="card">
@@ -582,6 +582,7 @@
                 document.getElementById('monthlyCost').textContent = monthlyCost.toLocaleString('hu-HU') + ' Ft';
                 document.getElementById('invoicesSummary').textContent = `${pending} függőben, ${paid} kifizetve`;
                 document.getElementById('ticketsSummary').textContent = `${urgent} sürgős, ${normal} normál prioritás`;
+                document.getElementById('servicesSummary').textContent = `${active} aktív, ${inactive} inaktív szolgáltatás`;
                 
                 console.log('📊 Dashboard adatok frissítve');
             } catch (error) {
