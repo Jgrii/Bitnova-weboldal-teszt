@@ -347,6 +347,63 @@
         </div>
     </div>
 
+        <!-- Jegy megtekintő modal -->
+    <div id="viewTicketModal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-ticket-alt"></i> Támogatási jegy részletei</h3>
+                <span class="close" onclick="closeViewTicketModal()">&times;</span>
+            </div>
+            <div class="modal-body" style="padding: 30px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 25px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #2c3e50;">Jegy száma</label>
+                        <div id="viewTicketNumber" style="padding: 10px; background-color: #f8f9fa; border-radius: 5px; font-weight: 500;"></div>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #2c3e50;">Státusz</label>
+                        <div id="viewTicketStatus" style="padding: 10px;"></div>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #2c3e50;">Prioritás</label>
+                        <div id="viewTicketPriority" style="padding: 10px;"></div>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #2c3e50;">Kategória</label>
+                        <div id="viewTicketCategory" style="padding: 10px; background-color: #f8f9fa; border-radius: 5px;"></div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 25px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #2c3e50;">Tárgy</label>
+                    <div id="viewTicketSubject" style="padding: 15px; background-color: #f8f9fa; border-radius: 5px; font-size: 18px; font-weight: 500;"></div>
+                </div>
+                
+                <div style="margin-bottom: 25px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #2c3e50;">Leírás</label>
+                    <div id="viewTicketDescription" style="padding: 15px; background-color: #f8f9fa; border-radius: 5px; min-height: 100px; white-space: pre-wrap; line-height: 1.5;"></div>
+                </div>
+                
+                <div style="margin-bottom: 25px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #2c3e50;">Létrehozva</label>
+                    <div id="viewTicketCreated" style="padding: 10px; background-color: #f8f9fa; border-radius: 5px; color: #6c757d;"></div>
+                </div>
+                
+                <div id="ticketReplySection" style="margin-top: 30px; border-top: 1px solid #dee2e6; padding-top: 25px;">
+                    <label style="display: block; margin-bottom: 10px; font-weight: 600; color: #2c3e50;">
+                        <i class="fas fa-reply"></i> Válasz a támogatástól
+                    </label>
+                    <div id="viewTicketReply" style="padding: 15px; background-color: #e8f5e8; border-left: 4px solid #28a745; border-radius: 5px; white-space: pre-wrap; line-height: 1.5; font-style: italic;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeViewTicketModal()">
+                    <i class="fas fa-times"></i> Bezárás
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.15.0/firebase-app-compat.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.15.0/firebase-auth-compat.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.15.0/firebase-firestore-compat.min.js"></script>
@@ -961,10 +1018,92 @@ function downloadInvoice(invoiceId) {
     showNotification('Számla letöltés funkció fejlesztés alatt', 'info');
 }
 
-function viewTicket(ticketId) {
-    console.log('Jegy megtekintése:', ticketId);
-    showNotification('Jegy megtekintés funkció fejlesztés alatt', 'info');
-}
+    // Jegy megtekintő modal megnyitása
+    async function viewTicket(ticketId) {
+        try {
+            // Loading állapot
+            const modal = document.getElementById('viewTicketModal');
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            // Alapértelmezett "Betöltés..." szövegek
+            document.getElementById('viewTicketNumber').textContent = 'Betöltés...';
+            document.getElementById('viewTicketSubject').textContent = 'Betöltés...';
+            document.getElementById('viewTicketDescription').textContent = 'Betöltés...';
+            
+            // Jegy adatok lekérése Firestore-ból
+            const doc = await db.collection('tickets').doc(ticketId).get();
+            
+            if (!doc.exists) {
+                showNotification('A jegy nem található!', 'error');
+                closeViewTicketModal();
+                return;
+            }
+            
+            const ticket = doc.data();
+            
+            // Adatok megjelenítése
+            document.getElementById('viewTicketNumber').textContent = `#${ticket.ticketNumber}`;
+            document.getElementById('viewTicketSubject').textContent = ticket.subject;
+            document.getElementById('viewTicketDescription').textContent = ticket.description;
+            
+            // Státusz megjelenítése
+            const statusClass = ticket.status === 'open' ? 'pending' : 
+                               ticket.status === 'in_progress' ? 'pending' : 'paid';
+            const statusText = ticket.status === 'open' ? 'Nyitott' : 
+                              ticket.status === 'in_progress' ? 'Folyamatban' : 'Lezárt';
+            document.getElementById('viewTicketStatus').innerHTML = `<span class="status ${statusClass}">${statusText}</span>`;
+            
+            // Prioritás megjelenítése
+            const priorityClass = ticket.priority === 'urgent' ? 'overdue' : 
+                                 ticket.priority === 'high' ? 'pending' : 'paid';
+            const priorityText = ticket.priority === 'urgent' ? 'Sürgős' : 
+                                ticket.priority === 'high' ? 'Magas' : 'Normál';
+            document.getElementById('viewTicketPriority').innerHTML = `<span class="status ${priorityClass}">${priorityText}</span>`;
+            
+            // Kategória megjelenítése
+            const categoryText = ticket.category === 'technical' ? 'Technikai probléma' :
+                                ticket.category === 'billing' ? 'Számlázás' :
+                                ticket.category === 'general' ? 'Általános kérdés' :
+                                ticket.category === 'feature' ? 'Új funkció kérése' : ticket.category;
+            document.getElementById('viewTicketCategory').textContent = categoryText;
+            
+            // Létrehozás dátuma
+            let createdDate = 'N/A';
+            if (ticket.createdAt) {
+                if (ticket.createdAt.seconds) {
+                    createdDate = new Date(ticket.createdAt.seconds * 1000).toLocaleString('hu-HU');
+                } else if (ticket.createdAt.toDate) {
+                    createdDate = ticket.createdAt.toDate().toLocaleString('hu-HU');
+                }
+            }
+            document.getElementById('viewTicketCreated').textContent = createdDate;
+            
+            // Válasz megjelenítése vagy elrejtése
+            const replySection = document.getElementById('ticketReplySection');
+            const replyDiv = document.getElementById('viewTicketReply');
+            
+            if (ticket.reply && ticket.reply.trim() !== '') {
+                replyDiv.textContent = ticket.reply;
+                replySection.style.display = 'block';
+            } else {
+                replySection.style.display = 'none';
+            }
+            
+            console.log('✅ Jegy részletei betöltve:', ticket.ticketNumber);
+            
+        } catch (error) {
+            console.error('Jegy betöltési hiba:', error);
+            showNotification('Hiba a jegy betöltése során!', 'error');
+            closeViewTicketModal();
+        }
+    }
+    
+    // Jegy megtekintő modal bezárása
+    function closeViewTicketModal() {
+        document.getElementById('viewTicketModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
 
 async function deleteTicket(ticketId) {
     // Megerősítés kérése
@@ -1062,11 +1201,15 @@ function closeNewTicketModal() {
 window.onclick = function(event) {
     const modal = document.getElementById('newTicketModal');
     const deleteModal = document.getElementById('deleteConfirmModal');
+    const viewModal = document.getElementById('viewTicketModal');
     if (event.target == modal) {
         closeNewTicketModal();
     }
     if (event.target == deleteModal) {
         closeDeleteConfirmModal();
+    }
+    if (event.target == viewModal) {  // ÚJ BLOKK
+    closeViewTicketModal();
     }
 }
 
@@ -1074,6 +1217,7 @@ document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape') {
         closeNewTicketModal();
         closeDeleteConfirmModal();
+        closeViewTicketModal();
     }
 });
 
