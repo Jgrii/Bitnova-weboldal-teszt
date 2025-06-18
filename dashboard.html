@@ -1027,8 +1027,11 @@ document.getElementById('newTicketForm').addEventListener('submit', async (e) =>
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         };
         
+        console.log('Új jegy mentése:', newTicket);
+        
         // Jegy mentése Firestore-ba
-        await db.collection('tickets').add(newTicket);
+        const docRef = await db.collection('tickets').add(newTicket);
+        console.log('✅ Jegy mentve, ID:', docRef.id);
         
         // Aktivitás naplózása
         await db.collection('activities').add({
@@ -1052,12 +1055,22 @@ document.getElementById('newTicketForm').addEventListener('submit', async (e) =>
         
     } catch (error) {
         console.error('Jegy létrehozási hiba:', error);
-        showNotification('Hiba a jegy létrehozása során: ' + error.message, 'error');
+        let errorMessage = 'Hiba a jegy létrehozása során';
+        
+        if (error.code === 'permission-denied') {
+            errorMessage = 'Nincs jogosultság a jegy létrehozásához. Kérjük, jelentkezzen be újra.';
+        } else if (error.message) {
+            errorMessage += ': ' + error.message;
+        }
+        
+        showNotification(errorMessage, 'error');
     } finally {
         // Loading állapot visszaállítása
         const submitBtn = e.target.querySelector('button[type="submit"]');
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
+        if (submitBtn) {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }
     }
 });
 
