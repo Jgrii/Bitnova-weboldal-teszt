@@ -382,7 +382,7 @@
         function logout() {
             auth.signOut().then(() => {
                 console.log('Sikeres kijelentkezés');
-                window.location.href = 'bejelentkezes.html';
+                window.location.href = 'index.html';
             }).catch((error) => {
                 console.error('Kijelentkezési hiba:', error);
                 alert('Hiba történt a kijelentkezés során: ' + error.message);
