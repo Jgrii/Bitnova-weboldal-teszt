@@ -634,7 +634,9 @@
                     card.className = 'card';
                     
                     const statusClass = service.status === 'active' ? 'paid' : 'pending';
-                    const statusText = service.status === 'active' ? 'Aktív' : 'Inaktív';
+                    const statusText = service.status === 'active' ? 'Aktív';
+                    const statusText = service.status === 'inactive' ? 'Inaktív';
+                    const statusText = service.status === 'suspended' ? 'Felfűggesztve';
                     
                     const nextBilling = service.nextBilling ? 
                         new Date(service.nextBilling.seconds * 1000).toLocaleDateString('hu-HU') : 'N/A';
