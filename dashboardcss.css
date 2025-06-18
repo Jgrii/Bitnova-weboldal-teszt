@@ -211,6 +211,16 @@ body {
     transition: all 0.3s ease;
 }
 
+.btn-delete {
+    background: #d95555;
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #db3030;
+}
+
+
 .btn-primary {
     background: #667eea;
     color: white;
