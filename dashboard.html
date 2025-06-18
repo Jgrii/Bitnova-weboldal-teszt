@@ -806,8 +806,16 @@ function showSection(sectionId) {
     // Kiválasztott szekció megjelenítése
     document.getElementById(sectionId).classList.remove('hidden');
     
-    // Aktív nav elem beállítása
-    event.target.closest('.nav-item').classList.add('active');
+    // Aktív nav elem beállítása - csak ha van event
+    if (typeof event !== 'undefined' && event.target) {
+        event.target.closest('.nav-item').classList.add('active');
+    } else {
+        // Programatikus hívás esetén megkeressük a megfelelő nav elemet
+        const targetNavItem = document.querySelector(`[onclick="showSection('${sectionId}')"]`);
+        if (targetNavItem) {
+            targetNavItem.classList.add('active');
+        }
+    }
 }
 
 // Profil form kezelése
@@ -1001,11 +1009,13 @@ document.getElementById('newTicketForm').addEventListener('submit', async (e) =>
         showNotification('Hiba: Nincs bejelentkezett felhasználó!', 'error');
         return;
     }
+
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
     
     try {
         // Loading állapot
-        const submitBtn = e.target.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
+        
         submitBtn.textContent = 'Létrehozás...';
         submitBtn.disabled = true;
         
