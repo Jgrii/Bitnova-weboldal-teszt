@@ -564,6 +564,12 @@
                     const service = doc.data();
                     if (service.monthlyPrice) monthlyCost += service.monthlyPrice;
                 });
+
+                servicesSnapshot.forEach(doc => {
+                    const service = doc.data();
+                    if (service.status === 'active') active++;
+                    else inactive++;
+                });
                 
                 invoicesSnapshot.forEach(doc => {
                     const invoice = doc.data();
