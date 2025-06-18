@@ -753,6 +753,7 @@ async function loadTickets(userId) {
                 <td>${createdDate}</td>
                 <td>
                     <button class="btn btn-sm btn-primary" onclick="viewTicket('${doc.id}')">Megtekint</button>
+                    <button class="btn btn-sm btn-delete" onclick="viewInvoice('${doc.id}')">Törlés</button>
                 </td>
             `;
             tableBody.appendChild(row);
