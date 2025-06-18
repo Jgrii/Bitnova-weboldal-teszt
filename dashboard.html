@@ -952,6 +952,101 @@ function setupRealTimeListeners(userId) {
         });
 }
 
+// Új jegy modal megnyitása
+function openNewTicketModal() {
+    document.getElementById('newTicketModal').style.display = 'block';
+    document.body.style.overflow = 'hidden'; // Scroll letiltása
+}
+
+// Új jegy modal bezárása
+function closeNewTicketModal() {
+    document.getElementById('newTicketModal').style.display = 'none';
+    document.body.style.overflow = 'auto'; // Scroll visszaállítása
+    document.getElementById('newTicketForm').reset();
+}
+
+// Modal bezárása ESC gombbal vagy háttérre kattintással
+window.onclick = function(event) {
+    const modal = document.getElementById('newTicketModal');
+    if (event.target == modal) {
+        closeNewTicketModal();
+    }
+}
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeNewTicketModal();
+    }
+});
+
+// Új jegy form kezelése
+document.getElementById('newTicketForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const user = auth.currentUser;
+    if (!user) {
+        showNotification('Hiba: Nincs bejelentkezett felhasználó!', 'error');
+        return;
+    }
+    
+    try {
+        // Loading állapot
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Létrehozás...';
+        submitBtn.disabled = true;
+        
+        // Jegy szám generálása
+        const now = new Date();
+        const year = now.getFullYear();
+        const ticketNumber = `T-${year}-${String(Math.floor(Math.random() * 999) + 1).padStart(3, '0')}`;
+        
+        // Új jegy adatok
+        const newTicket = {
+            userId: user.uid,
+            ticketNumber: ticketNumber,
+            subject: document.getElementById('ticketSubject').value.trim(),
+            priority: document.getElementById('ticketPriority').value,
+            category: document.getElementById('ticketCategory').value,
+            description: document.getElementById('ticketDescription').value.trim(),
+            status: 'open',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        
+        // Jegy mentése Firestore-ba
+        await db.collection('tickets').add(newTicket);
+        
+        // Aktivitás naplózása
+        await db.collection('activities').add({
+            userId: user.uid,
+            description: `Új támogatási jegy létrehozva: ${newTicket.subject}`,
+            type: 'ticket',
+            status: 'Nyitott',
+            date: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        
+        console.log('✅ Új jegy létrehozva:', ticketNumber);
+        
+        // Siker értesítés
+        showNotification(`Jegy sikeresen létrehozva: ${ticketNumber}`, 'success');
+        
+        // Modal bezárása
+        closeNewTicketModal();
+        
+        // Jegyek szekció megjelenítése
+        showSection('tickets');
+        
+    } catch (error) {
+        console.error('Jegy létrehozási hiba:', error);
+        showNotification('Hiba a jegy létrehozása során: ' + error.message, 'error');
+    } finally {
+        // Loading állapot visszaállítása
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    }
+});
 
 
 // Inicializálás befejezése
