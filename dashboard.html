@@ -1372,6 +1372,62 @@ function deleteTicket(ticketId) {
     openDeleteConfirmModal(ticketId);
 }
 
+// functions/index.js (Firebase Cloud Functions)
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+admin.initializeApp();
+
+// Jegy státusz változás figyelése
+exports.onTicketStatusChange = functions.firestore
+    .document('tickets/{ticketId}')
+    .onUpdate(async (change, context) => {
+        const before = change.before.data();
+        const after = change.after.data();
+        
+        // Ha státusz változott
+        if (before.status !== after.status) {
+            await admin.firestore().collection('activities').add({
+                userId: after.userId,
+                description: `Jegy státusza megváltozott: ${after.subject}`,
+                type: 'ticket_status',
+                status: getStatusText(after.status),
+                date: admin.firestore.FieldValue.serverTimestamp(),
+                relatedId: context.params.ticketId
+            });
+        }
+    });
+
+// Számla státusz változás figyelése
+exports.onInvoiceStatusChange = functions.firestore
+    .document('invoices/{invoiceId}')
+    .onUpdate(async (change, context) => {
+        const before = change.before.data();
+        const after = change.after.data();
+        
+        if (before.status !== after.status) {
+            await admin.firestore().collection('activities').add({
+                userId: after.userId,
+                description: `Számla státusza megváltozott: #${after.invoiceNumber}`,
+                type: 'invoice_status',
+                status: getStatusText(after.status),
+                date: admin.firestore.FieldValue.serverTimestamp(),
+                relatedId: context.params.invoiceId
+            });
+        }
+    });
+
+function getStatusText(status) {
+    const statusMap = {
+        'open': 'Nyitott',
+        'in_progress': 'Folyamatban',
+        'closed': 'Lezárt',
+        'paid': 'Kifizetve',
+        'pending': 'Függőben',
+        'overdue': 'Lejárt'
+    };
+    return statusMap[status] || status;
+}
+
 
 // Inicializálás befejezése
 document.addEventListener('DOMContentLoaded', () => {
