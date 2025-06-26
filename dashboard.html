@@ -1449,7 +1449,7 @@ function deleteTicket(ticketId) {
             // Adatok megjelenítése
             document.getElementById('viewInvoiceNumber').textContent = `#${invoice.invoiceNumber}`;
             document.getElementById('viewInvoiceDescription').textContent = invoice.description;
-            document.getElementById('viewInvoiceAmount').textContent = invoice.amount;
+            document.getElementById('viewInvoiceAmount').textContent = invoice.amount +' Ft';
             document.getElementById('viewInvoiceCompany').textContent = invoice.companyName;
             document.getElementById('viewInvoiceNotes').textContent = invoice.notes;
             
