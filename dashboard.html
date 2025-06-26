@@ -1458,10 +1458,10 @@ function deleteTicket(ticketId) {
             document.getElementById('viewInvoiceNotes').textContent = invoice.notes;
             
             // Státusz megjelenítése
-            const statusClass = ticket.status === 'open' ? 'pending' : 
-                               ticket.status === 'in_progress' ? 'pending' : 'paid';
-            const statusText = ticket.status === 'open' ? 'Nyitott' : 
-                              ticket.status === 'in_progress' ? 'Folyamatban' : 'Lezárt';
+            const statusClass = innvoice.status === 'open' ? 'pending' : 
+                               invoice.status === 'in_progress' ? 'pending' : 'paid';
+            const statusText = invoice.status === 'paid' ? 'Fizetett' : 
+                              invoice.status === 'pending' ? 'Folyamatban' : 'Lezárt';
             document.getElementById('viewInvoiceStatus').innerHTML = `<span class="status ${statusClass}">${statusText}</span>`;
             
 
