@@ -1470,7 +1470,7 @@ function deleteTicket(ticketId) {
             let createdDate = 'N/A';
             if (invoice.createdAt) {
                 if (invoice.createdAt.seconds) {
-                    createdDate = new Date(ticket.createdAt.seconds * 1000).toLocaleString('hu-HU');
+                    createdDate = new Date(invoice.createdAt.seconds * 1000).toLocaleString('hu-HU');
                 } else if (invoice.createdAt.toDate) {
                     createdDate = invoice.createdAt.toDate().toLocaleString('hu-HU');
                 }
