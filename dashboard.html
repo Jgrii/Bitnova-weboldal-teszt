@@ -426,12 +426,6 @@
                         <div id="viewInvoiceCompany" style="padding: 10px; background-color: #f8f9fa; border-radius: 5px;"></div>
                     </div>
                 </div>
-                
-                <div style="margin-bottom: 25px;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #2c3e50;">Tárgy</label>
-                    <div id="viewInvoiceSubject" style="padding: 15px; background-color: #f8f9fa; border-radius: 5px; font-size: 18px; font-weight: 500;"></div>
-                </div>
-                
                 <div style="margin-bottom: 25px;">
                     <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #2c3e50;">Leírás</label>
                     <div id="viewInvoiceDescription" style="padding: 15px; background-color: #f8f9fa; border-radius: 5px; min-height: 100px; white-space: pre-wrap; line-height: 1.5;"></div>
@@ -1451,7 +1445,6 @@ function deleteTicket(ticketId) {
             
             // Adatok megjelenítése
             document.getElementById('viewInvoiceNumber').textContent = `#${invoice.invoiceNumber}`;
-            document.getElementById('viewInvoiceSubject').textContent = invoice.subject;
             document.getElementById('viewInvoiceDescription').textContent = invoice.description;
             document.getElementById('viewInvoiceAmount').textContent = invoice.amount;
             document.getElementById('viewInvoiceCompany').textContent = invoice.companyName;
@@ -1461,7 +1454,7 @@ function deleteTicket(ticketId) {
             const statusClass = invoice.status === 'open' ? 'pending' : 
                                invoice.status === 'in_progress' ? 'pending' : 'paid';
             const statusText = invoice.status === 'paid' ? 'Fizetett' : 
-                              invoice.status === 'pending' ? 'Folyamatban' : 'Lezárt';
+                              invoice.status === 'pending' ? 'Fizetendő' : 'Lezárt';
             document.getElementById('viewInvoiceStatus').innerHTML = `<span class="status ${statusClass}">${statusText}</span>`;
             
 
