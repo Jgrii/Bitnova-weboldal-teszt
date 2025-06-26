@@ -1458,7 +1458,7 @@ function deleteTicket(ticketId) {
             document.getElementById('viewInvoiceNotes').textContent = invoice.notes;
             
             // Státusz megjelenítése
-            const statusClass = innvoice.status === 'open' ? 'pending' : 
+            const statusClass = invoice.status === 'open' ? 'pending' : 
                                invoice.status === 'in_progress' ? 'pending' : 'paid';
             const statusText = invoice.status === 'paid' ? 'Fizetett' : 
                               invoice.status === 'pending' ? 'Folyamatban' : 'Lezárt';
