@@ -399,7 +399,8 @@
             </div>
         </div>
     </div>
-
+    
+    <!-- számlák megtekintése -->
     <div id="viewInvoiceModal" class="modal" style="display: none;">
         <div class="modal-content" style="max-width: 800px;">
             <div class="modal-header">
@@ -1446,7 +1447,7 @@ function deleteTicket(ticketId) {
                 return;
             }
             
-            const ticket = doc.data();
+            const invoice = doc.data();
             
             // Adatok megjelenítése
             document.getElementById('viewInvoiceNumber').textContent = `#${invoice.invoiceNumber}`;
@@ -1461,7 +1462,7 @@ function deleteTicket(ticketId) {
                                ticket.status === 'in_progress' ? 'pending' : 'paid';
             const statusText = ticket.status === 'open' ? 'Nyitott' : 
                               ticket.status === 'in_progress' ? 'Folyamatban' : 'Lezárt';
-            document.getElementById('viewINvoiceStatus').innerHTML = `<span class="status ${statusClass}">${statusText}</span>`;
+            document.getElementById('viewInvoiceStatus').innerHTML = `<span class="status ${statusClass}">${statusText}</span>`;
             
 
             
@@ -1485,7 +1486,7 @@ function deleteTicket(ticketId) {
     }
     
     // Számla megtekintő modal bezárása
-    function closeViewTicketModal() {
+    function closeViewInvoiceModal() {
         document.getElementById('viewInvoiceModal').style.display = 'none';
         document.body.style.overflow = 'auto';
     }
