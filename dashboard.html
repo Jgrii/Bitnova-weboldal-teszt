@@ -385,7 +385,6 @@
                     <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #2c3e50;">Létrehozva</label>
                     <div id="viewTicketCreated" style="padding: 10px; background-color: #f8f9fa; border-radius: 5px; color: #6c757d;"></div>
                 </div>
-                
                 <div id="ticketReplySection" style="margin-top: 30px; border-top: 1px solid #dee2e6; padding-top: 25px;">
                     <label style="display: block; margin-bottom: 10px; font-weight: 600; color: #2c3e50;">
                         <i class="fas fa-reply"></i> Válasz a támogatástól
@@ -395,6 +394,59 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" onclick="closeViewTicketModal()">
+                    <i class="fas fa-times"></i> Bezárás
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="viewInvoiceModal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-ticket-alt"></i>Számla részletei</h3>
+                <span class="close" onclick="closeViewInvoiceModal()">&times;</span>
+            </div>
+            <div class="modal-body" style="padding: 30px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 25px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #2c3e50;">Számla száma</label>
+                        <div id="viewInvoiceNumber" style="padding: 10px; background-color: #f8f9fa; border-radius: 5px; font-weight: 500;"></div>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #2c3e50;">Státusz</label>
+                        <div id="viewInvoiceStatus" style="padding: 10px;"></div>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #2c3e50;">Összeg</label>
+                        <div id="viewInvoiceAmount" style="padding: 10px;"></div>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #2c3e50;">Cégnév</label>
+                        <div id="viewInvoiceCompany" style="padding: 10px; background-color: #f8f9fa; border-radius: 5px;"></div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 25px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #2c3e50;">Tárgy</label>
+                    <div id="viewInvoiceSubject" style="padding: 15px; background-color: #f8f9fa; border-radius: 5px; font-size: 18px; font-weight: 500;"></div>
+                </div>
+                
+                <div style="margin-bottom: 25px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #2c3e50;">Leírás</label>
+                    <div id="viewInvoiceDescription" style="padding: 15px; background-color: #f8f9fa; border-radius: 5px; min-height: 100px; white-space: pre-wrap; line-height: 1.5;"></div>
+                </div>
+                <div style="margin-bottom: 25px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #2c3e50;">Megjegyzés</label>
+                    <div id="viewInvoiceNotes" style="padding: 15px; background-color: #f8f9fa; border-radius: 5px; min-height: 100px; white-space: pre-wrap; line-height: 1.5;"></div>
+                </div>
+                
+                <div style="margin-bottom: 25px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600; color: #2c3e50;">Létrehozva</label>
+                    <div id="viewInvoiceCreated" style="padding: 10px; background-color: #f8f9fa; border-radius: 5px; color: #6c757d;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeViewInvoiceModal()">
                     <i class="fas fa-times"></i> Bezárás
                 </button>
             </div>
@@ -1368,6 +1420,75 @@ async function confirmDelete() {
 function deleteTicket(ticketId) {
     openDeleteConfirmModal(ticketId);
 }
+
+    // Számla megtekintő modal megnyitása
+    async function viewInvoice(invoiceNumber) {
+        try {
+            // Loading állapot
+            const modal = document.getElementById('viewInvoiceModal');
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            // Alapértelmezett "Betöltés..." szövegek
+            document.getElementById('viewInvoiceNumber').textContent = 'Betöltés...';
+            document.getElementById('viewInvoiceSubject').textContent = 'Betöltés...';
+            document.getElementById('viewInvoiceDescription').textContent = 'Betöltés...';
+            document.getElementById('viewInvoiceAmount').textContent = 'Betöltés...';
+            document.getElementById('viewInvoiceCompany').textContent = 'Betöltés...';
+            document.getElementById('viewInvoiceNotes').textContent = 'Betöltés...';
+            
+            // Jegy adatok lekérése Firestore-ból
+            const doc = await db.collection('invoices').doc(invoiceNumber).get();
+            
+            if (!doc.exists) {
+                showNotification('A számla nem található!', 'error');
+                closeViewInvoiceModal();
+                return;
+            }
+            
+            const ticket = doc.data();
+            
+            // Adatok megjelenítése
+            document.getElementById('viewInvoiceNumber').textContent = `#${invoice.invoiceNumber}`;
+            document.getElementById('viewInvoiceSubject').textContent = invoice.subject;
+            document.getElementById('viewInvoiceDescription').textContent = invoice.description;
+            document.getElementById('viewInvoiceAmount').textContent = invoice.amount;
+            document.getElementById('viewInvoiceCompany').textContent = invoice.companyName;
+            document.getElementById('viewInvoiceNotes').textContent = invoice.notes;
+            
+            // Státusz megjelenítése
+            const statusClass = ticket.status === 'open' ? 'pending' : 
+                               ticket.status === 'in_progress' ? 'pending' : 'paid';
+            const statusText = ticket.status === 'open' ? 'Nyitott' : 
+                              ticket.status === 'in_progress' ? 'Folyamatban' : 'Lezárt';
+            document.getElementById('viewINvoiceStatus').innerHTML = `<span class="status ${statusClass}">${statusText}</span>`;
+            
+
+            
+            // Létrehozás dátuma
+            let createdDate = 'N/A';
+            if (invoice.createdAt) {
+                if (invoice.createdAt.seconds) {
+                    createdDate = new Date(ticket.createdAt.seconds * 1000).toLocaleString('hu-HU');
+                } else if (invoice.createdAt.toDate) {
+                    createdDate = invoice.createdAt.toDate().toLocaleString('hu-HU');
+                }
+            }
+            document.getElementById('viewInvoiceCreated').textContent = createdDate;
+            
+            
+        } catch (error) {
+            console.error('Számla betöltési hiba:', error);
+            showNotification('Hiba a Számla betöltése során!', 'error');
+            closeViewInvoiceModal();
+        }
+    }
+    
+    // Számla megtekintő modal bezárása
+    function closeViewTicketModal() {
+        document.getElementById('viewInvoiceModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
 
 
 // Inicializálás befejezése
