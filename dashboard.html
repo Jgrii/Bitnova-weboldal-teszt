@@ -789,7 +789,7 @@
                         <td><span class="status ${statusClass}">${statusText}</span></td>
                         <td>
                             <button class="btn btn-sm btn-primary" onclick="viewInvoice('${doc.id}')">Megtekint</button>
-                            <button class="btn btn-sm btn-secondary"  onclick="downloadInvoiceImage('${szamlaszam}', '${imageBase64}')">Letölt</button>
+                            <button class="btn btn-sm btn-secondary" onclick="downloadInvoiceImage('${invoice.invoiceNumber}', '${invoice.imageBase64}')">Letölt</button>
                         </td>
                     `;
                     tableBody.appendChild(row);
