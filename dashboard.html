@@ -149,7 +149,7 @@
                                     <td><span class="status pending">Betöltés...</span></td>
                                     <td>
                                         <button class="btn btn-sm btn-primary">Megtekint</button>
-                                        <button class="btn btn-sm btn-secondary">Letölt</button>
+                                        <button class="btn btn-sm btn-secondary" onclick="downloadInvoiceImage('${szamlaszam}', '${imageBase64}')">Letölt</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -1354,71 +1354,71 @@ document.getElementById('newTicketForm').addEventListener('submit', async (e) =>
     }
 });
 
-// Globális változó a törlendő jegy ID tárolásához
-let ticketToDelete = null;
-
-// Törlés modal megnyitása
-function openDeleteConfirmModal(ticketId) {
-    ticketToDelete = ticketId;
-    document.getElementById('deleteConfirmModal').style.display = 'block';
-    document.body.style.overflow = 'hidden';
-}
-
-// Törlés modal bezárása
-function closeDeleteConfirmModal() {
-    ticketToDelete = null;
-    document.getElementById('deleteConfirmModal').style.display = 'none';
-    document.body.style.overflow = 'auto';
-}
-
-// Törlés megerősítése
-async function confirmDelete() {
-    if (!ticketToDelete) return;
+    // Globális változó a törlendő jegy ID tárolásához
+    let ticketToDelete = null;
     
-    try {
-        // Loading állapot
-        const confirmBtn = document.getElementById('confirmDeleteBtn');
-        const originalText = confirmBtn.innerHTML;
-        confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Törlés...';
-        confirmBtn.disabled = true;
-        
-        // Jegy törlése Firestore-ból
-        await db.collection('tickets').doc(ticketToDelete).delete();
-        console.log('✅ Jegy törölve:', ticketToDelete);
-        
-        // Aktivitás naplózása
-        const user = auth.currentUser;
-        if (user) {
-            await db.collection('activities').add({
-                userId: user.uid,
-                description: 'Támogatási jegy törölve',
-                type: 'ticket',
-                status: 'Törölve',
-                date: firebase.firestore.FieldValue.serverTimestamp()
-            });
-        }
-        
-        // Siker üzenet
-        showNotification('Támogatási jegy sikeresen törölve!', 'success');
-        
-        // Modal bezárása
-        closeDeleteConfirmModal();
-        
-    } catch (error) {
-        console.error('Jegy törlési hiba:', error);
-        showNotification('Hiba a jegy törlése során!', 'error');
-        
-        // Gomb visszaállítása hiba esetén
-        const confirmBtn = document.getElementById('confirmDeleteBtn');
-        confirmBtn.innerHTML = '<i class="fas fa-trash"></i> Igen, törlöm';
-        confirmBtn.disabled = false;
+    // Törlés modal megnyitása
+    function openDeleteConfirmModal(ticketId) {
+        ticketToDelete = ticketId;
+        document.getElementById('deleteConfirmModal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
     }
-}
-
-// Eredeti deleteTicket függvény módosítása
-function deleteTicket(ticketId) {
-    openDeleteConfirmModal(ticketId);
-}
+    
+    // Törlés modal bezárása
+    function closeDeleteConfirmModal() {
+        ticketToDelete = null;
+        document.getElementById('deleteConfirmModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    
+    // Törlés megerősítése
+    async function confirmDelete() {
+        if (!ticketToDelete) return;
+        
+        try {
+            // Loading állapot
+            const confirmBtn = document.getElementById('confirmDeleteBtn');
+            const originalText = confirmBtn.innerHTML;
+            confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Törlés...';
+            confirmBtn.disabled = true;
+            
+            // Jegy törlése Firestore-ból
+            await db.collection('tickets').doc(ticketToDelete).delete();
+            console.log('✅ Jegy törölve:', ticketToDelete);
+            
+            // Aktivitás naplózása
+            const user = auth.currentUser;
+            if (user) {
+                await db.collection('activities').add({
+                    userId: user.uid,
+                    description: 'Támogatási jegy törölve',
+                    type: 'ticket',
+                    status: 'Törölve',
+                    date: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+            
+            // Siker üzenet
+            showNotification('Támogatási jegy sikeresen törölve!', 'success');
+            
+            // Modal bezárása
+            closeDeleteConfirmModal();
+            
+        } catch (error) {
+            console.error('Jegy törlési hiba:', error);
+            showNotification('Hiba a jegy törlése során!', 'error');
+            
+            // Gomb visszaállítása hiba esetén
+            const confirmBtn = document.getElementById('confirmDeleteBtn');
+            confirmBtn.innerHTML = '<i class="fas fa-trash"></i> Igen, törlöm';
+            confirmBtn.disabled = false;
+        }
+    }
+    
+    // Eredeti deleteTicket függvény módosítása
+    function deleteTicket(ticketId) {
+        openDeleteConfirmModal(ticketId);
+    }
 
     // Számla megtekintő modal megnyitása
     async function viewInvoice(invoiceNumber) {
@@ -1498,11 +1498,45 @@ function deleteTicket(ticketId) {
         document.body.style.overflow = 'auto';
     }
 
+    // Számla kép letöltés funkció
+    async function downloadInvoiceImage(invoiceNumber, imageBase64) {
+      try {
+        // Base64 string konvertálása blob-ba
+        const base64Data = imageBase64.split(',')[1] || imageBase64;
+        const byteCharacters = atob(base64Data);
+        const byteNumbers = new Array(byteCharacters.length);
+        
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'image/jpeg' });
+        
+        // Fájlnév generálása
+        const fileName = `bitnova-szamla-${invoiceNumber}.jpg`;
+        
+        // Letöltés indítása
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+        
+      } catch (error) {
+        console.error('Hiba a letöltés során:', error);
+      }
+    }
 
-// Inicializálás befejezése
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('🚀 Dashboard inicializálva');
-});
+
+    // Inicializálás befejezése
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('🚀 Dashboard inicializálva');
+    });
+        
 </script>
 </body>
 </html>
