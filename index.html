@@ -461,6 +461,88 @@
 
   .about-text .section-sub { margin-bottom: 2rem; }
 
+  /* FOUNDERS */
+  .founders-wrap {
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .founders-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-light);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .founders-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .founder-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .founder-photo {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  }
+  .founder-card:hover .founder-photo {
+    border-color: var(--accent);
+    transform: translateY(-5px);
+    box-shadow: var(--card-shadow-hover);
+  }
+
+  .founder-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--accent) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 1px;
+  }
+
+  .founder-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  .founder-info strong {
+    display: block;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 3px;
+  }
+
+  .founder-info span {
+    font-size: 0.85rem;
+    color: var(--text-light);
+  }
+
   .about-story p {
     font-size: 1rem;
     color: var(--text-mid);
@@ -952,6 +1034,40 @@
           <div class="about-card-icon">💰</div>
           <h4>Kedvező árak</h4>
           <p>Versenyképes árazás és átlátható költségstruktúra.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOUNDERS -->
+    <div class="founders-wrap reveal">
+      <h3 class="founders-title">Vezetőségk</h3>
+      <div class="founders-grid">
+        <div class="founder-card reveal reveal-delay-1">
+          <div class="founder-photo">
+            <img src="jager_imre.jpg" alt="Jáger Imre">
+          </div>
+          <div class="founder-info">
+            <strong>Jáger Imre</strong>
+            <span>CEO · Co-founder</span>
+          </div>
+        </div>
+        <div class="founder-card reveal reveal-delay-2">
+          <div class="founder-photo">
+            <img src="ehn_bence.jpg" alt="Jáger Imre">
+          </div>
+          <div class="founder-info">
+            <strong>Éhn Bence</strong>
+            <span>CFO · Co-founder</span>
+          </div>
+        </div>
+        <div class="founder-card reveal reveal-delay-3">
+          <div class="founder-photo">
+            <div class="founder-placeholder">PB</div>
+          </div>
+          <div class="founder-info">
+            <strong>Pauer Barnabás</strong>
+            <span>CTO · Co-founder</span>
+          </div>
         </div>
       </div>
     </div>
