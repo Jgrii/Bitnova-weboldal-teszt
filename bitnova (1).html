@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BitNova IT Solutions</title>
+<meta name="description" content="Megbízható informatikai szolgáltatások kis- és középvállalatok számára.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0B1F3A;
+    --navy-mid: #132847;
+    --accent: #1E8FFF;
+    --accent-light: #5AB3FF;
+    --accent-pale: #E8F4FF;
+    --teal: #00C9A7;
+    --teal-pale: #E0FAF5;
+    --orange: #FF6B35;
+    --orange-pale: #FFF0EA;
+    --text: #1A2940;
+    --text-mid: #3D5575;
+    --text-light: #6B88A8;
+    --border: #D4E3F0;
+    --bg: #F7FAFD;
+    --white: #FFFFFF;
+    --card-shadow: 0 2px 20px rgba(11,31,58,0.07);
+    --card-shadow-hover: 0 8px 40px rgba(30,143,255,0.15);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transition: box-shadow 0.3s;
+  }
+  header.scrolled { box-shadow: 0 4px 24px rgba(11,31,58,0.08); }
+
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo-text {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--navy);
+    letter-spacing: -0.5px;
+    text-decoration: none;
+  }
+  .logo-text span { color: var(--accent); }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+  }
+
+  nav a {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--text-mid);
+    text-decoration: none;
+    padding: 0.5rem 0.9rem;
+    border-radius: 8px;
+    transition: color 0.2s, background 0.2s;
+  }
+  nav a:hover { color: var(--navy); background: var(--accent-pale); }
+  nav a.active { color: var(--accent); }
+
+  .nav-cta {
+    background: var(--navy) !important;
+    color: var(--white) !important;
+    padding: 0.5rem 1.2rem !important;
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+    transition: background 0.2s, transform 0.15s !important;
+  }
+  .nav-cta:hover { background: var(--accent) !important; transform: translateY(-1px); }
+
+  /* HAMBURGER */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 6px;
+    transition: background 0.2s;
+  }
+  .hamburger:hover { background: var(--accent-pale); }
+  .hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--navy);
+    border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* MOBILE MENU */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    top: 68px; left: 0; right: 0;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem 1.5rem;
+    z-index: 99;
+    box-shadow: 0 8px 32px rgba(11,31,58,0.1);
+  }
+  .mobile-nav.open { display: block; }
+  .mobile-nav ul { list-style: none; display: flex; flex-direction: column; gap: 0.25rem; }
+  .mobile-nav a {
+    display: block;
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--text-mid);
+    text-decoration: none;
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .mobile-nav a:hover { background: var(--accent-pale); color: var(--navy); }
+
+  /* SECTIONS */
+  section { scroll-margin-top: 68px; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(30,143,255,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(30,143,255,0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(30,143,255,0.18) 0%, transparent 70%);
+    right: -100px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 8rem 2rem 6rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(30,143,255,0.15);
+    border: 1px solid rgba(30,143,255,0.3);
+    color: var(--accent-light);
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.4rem 0.9rem;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.5px;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--teal);
+    animation: pulse-dot 2s infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.4); }
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 1.25rem;
+    letter-spacing: -1px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    max-width: 480px;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: var(--white);
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.85rem 1.8rem;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+  .btn-primary:hover {
+    background: #0078e8;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(30,143,255,0.35);
+  }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: rgba(255,255,255,0.8);
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.85rem 1.8rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+  .btn-outline:hover {
+    border-color: rgba(255,255,255,0.5);
+    color: var(--white);
+    background: rgba(255,255,255,0.06);
+  }
+
+  .hero-visual {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .hero-stat-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .hero-stat {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.6s ease forwards;
+  }
+  .hero-stat:nth-child(1) { animation-delay: 0.3s; }
+  .hero-stat:nth-child(2) { animation-delay: 0.45s; }
+
+  .hero-stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .hero-stat-label {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+  }
+
+  .hero-feature-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.6s ease forwards;
+    animation-delay: 0.6s;
+  }
+
+  .hero-feature-icon {
+    width: 44px; height: 44px;
+    background: rgba(30,143,255,0.2);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+
+  .hero-feature-text strong {
+    display: block;
+    color: var(--white);
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  .hero-feature-text span {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.5);
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-text-animate {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: fadeUp 0.7s ease forwards;
+  }
+  .hero-text-animate:nth-child(1) { animation-delay: 0.05s; }
+  .hero-text-animate:nth-child(2) { animation-delay: 0.15s; }
+  .hero-text-animate:nth-child(3) { animation-delay: 0.22s; }
+  .hero-text-animate:nth-child(4) { animation-delay: 0.3s; }
+
+  /* SECTION COMMON */
+  .section-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+
+  .section-label {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    color: var(--navy);
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    margin-bottom: 1rem;
+  }
+
+  .section-sub {
+    font-size: 1.05rem;
+    color: var(--text-light);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 3.5rem;
+  }
+
+  /* ABOUT */
+  #about { background: var(--bg); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .about-visual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .about-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .about-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--card-shadow-hover);
+  }
+  .about-card:nth-child(2) { margin-top: 1.5rem; }
+  .about-card:nth-child(4) { margin-top: -1.5rem; }
+
+  .about-card-icon {
+    font-size: 1.6rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .about-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.4rem;
+  }
+
+  .about-card p {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+
+  .about-text .section-sub { margin-bottom: 2rem; }
+
+  .about-story p {
+    font-size: 1rem;
+    color: var(--text-mid);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+
+  /* SERVICES */
+  #services { background: var(--white); }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .service-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--card-accent, var(--accent));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+  }
+  .service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--card-shadow-hover);
+    border-color: transparent;
+  }
+  .service-card:hover::before { transform: scaleX(1); }
+
+  .service-card.teal { --card-accent: var(--teal); }
+  .service-card.orange { --card-accent: var(--orange); }
+  .service-card.navy { --card-accent: #7B5FF5; }
+
+  .service-icon {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .service-icon.blue { background: var(--accent-pale); }
+  .service-icon.teal { background: var(--teal-pale); }
+  .service-icon.orange { background: var(--orange-pale); }
+  .service-icon.purple { background: #F0ECFF; }
+
+  .service-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.75rem;
+  }
+
+  .service-card p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+
+  .service-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .service-list li {
+    font-size: 0.85rem;
+    color: var(--text-mid);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .service-list li::before {
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--card-accent, var(--accent));
+    flex-shrink: 0;
+  }
+
+  /* CONTACT */
+  #contact { background: var(--bg); }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .contact-info-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    transition: box-shadow 0.3s, transform 0.3s;
+  }
+  .contact-item:hover {
+    transform: translateX(4px);
+    box-shadow: var(--card-shadow);
+  }
+
+  .contact-item-icon {
+    width: 44px; height: 44px;
+    background: var(--accent-pale);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .contact-item strong {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-light);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .contact-item span {
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  /* FORM */
+  .contact-form-wrap {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem;
+  }
+
+  .contact-form-wrap h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+  }
+
+  .contact-form-wrap p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-mid);
+    margin-bottom: 0.4rem;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(30,143,255,0.12);
+    background: var(--white);
+  }
+  .form-group textarea { resize: vertical; min-height: 120px; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .btn-submit {
+    width: 100%;
+    padding: 0.9rem;
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-submit:hover { background: var(--accent); transform: translateY(-1px); }
+
+  /* SCROLL ANIMATIONS */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* FOOTER */
+  footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.55);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.88rem;
+  }
+  footer strong { color: rgba(255,255,255,0.85); font-weight: 500; }
+
+  /* RESPONSIVE */
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(11,31,58,0.6);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.active { display: flex; }
+
+  .modal {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 2.5rem;
+    max-width: 480px;
+    width: 90%;
+    position: relative;
+    animation: fadeUp 0.3s ease;
+  }
+
+  .close-x {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-light);
+    line-height: 1;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .close-x:hover { background: var(--bg); color: var(--navy); }
+
+  .modal-header { text-align: center; margin-bottom: 1.25rem; }
+
+  .modal-icon {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    margin: 0 auto 1rem;
+  }
+  .modal-icon.success { background: var(--teal-pale); color: var(--teal); }
+  .modal-icon.error { background: #FFE8E8; color: #E53E3E; }
+  .modal-icon.loading { background: var(--accent-pale); }
+
+  .loading-spinner {
+    width: 28px; height: 28px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .modal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .modal-body { margin-bottom: 1.5rem; }
+  .modal-body p { color: var(--text-mid); font-size: 0.95rem; line-height: 1.6; }
+
+  .modal-details {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--bg);
+    border-radius: 10px;
+    font-size: 0.88rem;
+  }
+  .modal-details h4 { color: var(--navy); font-weight: 600; margin-bottom: 0.5rem; font-size: 0.9rem; }
+  .modal-details p { margin-bottom: 0.3rem; color: var(--text-mid); }
+
+  .modal-footer { text-align: center; }
+  .modal-close-btn {
+    background: var(--navy);
+    color: var(--white);
+    border: none;
+    padding: 0.7rem 2rem;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .modal-close-btn:hover { background: var(--accent); }
+
+  .status-message {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  .status-loading { background: var(--accent-pale); color: var(--accent); }
+  .status-success { background: var(--teal-pale); color: #0F6E56; }
+  .status-error { background: #FFE8E8; color: #C53030; }
+
+  @media (max-width: 900px) {
+    nav { display: none; }
+    .hamburger { display: flex; }
+    .hero-inner { grid-template-columns: 1fr; padding-top: 6rem; }
+    .hero-visual { display: none; }
+    .about-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .section-wrap { padding: 4rem 1.25rem; }
+    .hero-inner { padding: 5rem 1.25rem 4rem; }
+    .about-visual { display: none; }
+    .contact-form-wrap { padding: 1.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="site-header">
+  <div class="header-inner">
+    <a href="#hero" class="logo-text">Bit<span>Nova</span></a>
+    <nav>
+      <ul>
+        <li><a href="#hero">Főoldal</a></li>
+        <li><a href="#about">Rólunk</a></li>
+        <li><a href="#services">Szolgáltatások</a></li>
+        <li><a href="#contact" class="nav-cta">Kapcsolat</a></li>
+        <li><a href="/login" style="color:var(--text-light);">Bejelentkezés</a></li>
+      </ul>
+    </nav>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mobile-nav" id="mobileNav">
+  <ul>
+    <li><a href="#hero" class="mob-link">Főoldal</a></li>
+    <li><a href="#about" class="mob-link">Rólunk</a></li>
+    <li><a href="#services" class="mob-link">Szolgáltatások</a></li>
+    <li><a href="#contact" class="mob-link">Kapcsolat</a></li>
+    <li><a href="/login">Bejelentkezés</a></li>
+  </ul>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge hero-text-animate">Fiatal csapat · Modern megoldások</div>
+      <h1 class="hero-text-animate">IT megoldások<br>amikben <em>megbízhatsz</em></h1>
+      <p class="hero-text-animate">Rendszerüzemeltetés, webfejlesztés és 0–24 órás támogatás kis- és középvállalatok számára. Gyorsan, megbízhatóan, kedvező áron.</p>
+      <div class="hero-btns hero-text-animate">
+        <a href="#contact" class="btn-primary">Kapcsolatfelvétel →</a>
+        <a href="#services" class="btn-outline">Szolgáltatásaink</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-stat-row">
+        <div class="hero-stat">
+          <div class="hero-stat-num">0–24</div>
+          <div class="hero-stat-label">Órás elérhetőség</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">100%</div>
+          <div class="hero-stat-label">Elégedett ügyfél</div>
+        </div>
+      </div>
+      <div class="hero-feature-card">
+        <div class="hero-feature-icon">🛡️</div>
+        <div class="hero-feature-text">
+          <strong>Teljes körű IT biztonság</strong>
+          <span>Tűzfal · VPN · Hálózatvédelem</span>
+        </div>
+      </div>
+      <div class="hero-feature-card" style="animation-delay:0.75s">
+        <div class="hero-feature-icon">⚡</div>
+        <div class="hero-feature-text">
+          <strong>Azonnali reagálás</strong>
+          <span>SOS gyorsszolgálat · Helyszíni támogatás</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-wrap">
+    <div class="about-grid">
+      <div class="about-text">
+        <span class="section-label reveal">Rólunk</span>
+        <h2 class="section-title reveal reveal-delay-1">Fiatal csapat,<br>komoly tudással</h2>
+        <p class="section-sub reveal reveal-delay-2">2024 óta segítjük vállalkozások és magánszemélyek informatikai problémáit gyorsan, hatékonyan megoldani.</p>
+        <div class="about-story reveal reveal-delay-3">
+          <p>A BitNova egy dinamikus IT csapat, amely azzal a céllal alakult, hogy megbízható és modern megoldásokat nyújtson. Hiszünk abban, hogy az informatika nemcsak technológia — hanem személyes szolgáltatás is.</p>
+          <p>Minden ügyfelünkkel közvetlen kapcsolatot ápolunk, és hosszú távú partnerségre törekszünk. Csapatunk folyamatosan követi a legújabb technológiai trendeket.</p>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="about-card reveal">
+          <div class="about-card-icon">🎯</div>
+          <h4>Megbízhatóság</h4>
+          <p>Minden projektben maximális minőség és betartott ígéretek.</p>
+        </div>
+        <div class="about-card reveal reveal-delay-1">
+          <div class="about-card-icon">⚡</div>
+          <h4>Gyorsaság</h4>
+          <p>Hatékony munkavégzés és azonnali támogatás sürgős esetekben.</p>
+        </div>
+        <div class="about-card reveal reveal-delay-2">
+          <div class="about-card-icon">🤝</div>
+          <h4>Közvetlen kapcsolat</h4>
+          <p>Személyes megközelítés és érthető kommunikáció.</p>
+        </div>
+        <div class="about-card reveal reveal-delay-3">
+          <div class="about-card-icon">💰</div>
+          <h4>Kedvező árak</h4>
+          <p>Versenyképes árazás és átlátható költségstruktúra.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-wrap">
+    <span class="section-label reveal">Amit kínálunk</span>
+    <h2 class="section-title reveal reveal-delay-1">Szolgáltatásaink</h2>
+    <p class="section-sub reveal reveal-delay-2">Teljes körű informatikai megoldások vállalkozásoknak és magánszemélyeknek.</p>
+
+    <div class="services-grid">
+      <article class="service-card reveal">
+        <div class="service-icon blue">🖥️</div>
+        <h3>Rendszerüzemeltetés</h3>
+        <p>IT infrastruktúra kiépítés, karbantartás és folyamatos felügyelet.</p>
+        <ul class="service-list">
+          <li>Szerver telepítés és konfigurálás</li>
+          <li>Hálózati rendszerek kiépítése</li>
+          <li>Biztonsági mentések kezelése</li>
+          <li>Teljesítmény optimalizálás</li>
+          <li>Vírusvédelem és biztonság</li>
+        </ul>
+      </article>
+
+      <article class="service-card teal reveal reveal-delay-1">
+        <div class="service-icon teal">🔒</div>
+        <h3>Hálózatbiztonság</h3>
+        <p>Átfogó biztonsági megoldások a legmodernebb fenyegetések ellen.</p>
+        <ul class="service-list">
+          <li>Tűzfal telepítés és beállítás</li>
+          <li>Behatolás-érzékelő rendszerek</li>
+          <li>VPN kapcsolatok kiépítése</li>
+          <li>Biztonsági audit</li>
+          <li>Adatvédelmi tanácsadás</li>
+        </ul>
+      </article>
+
+      <article class="service-card orange reveal reveal-delay-2">
+        <div class="service-icon orange">🌐</div>
+        <h3>Webfejlesztés</h3>
+        <p>Egyedi, AI-támogatott weboldalak karbantartással és frissítésekkel.</p>
+        <ul class="service-list">
+          <li>Egyedi weboldal fejlesztés</li>
+          <li>AI-támogatott személyre szabás</li>
+          <li>Reszponzív design</li>
+          <li>E-commerce megoldások</li>
+          <li>SEO optimalizálás</li>
+        </ul>
+      </article>
+
+      <article class="service-card navy reveal reveal-delay-3">
+        <div class="service-icon purple">🛠️</div>
+        <h3>Technikai támogatás</h3>
+        <p>Folyamatos elérhetőség, gyors és megbízható segítségnyújtás.</p>
+        <ul class="service-list">
+          <li>0–24 órás ügyfélszolgálat</li>
+          <li>Helyszíni technikai támogatás</li>
+          <li>Távoli segítségnyújtás</li>
+          <li>SOS gyorsszolgálat</li>
+          <li>Preventív karbantartás</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-wrap">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <span class="section-label reveal">Elérhetőség</span>
+        <h2 class="section-title reveal reveal-delay-1">Lépj velünk<br>kapcsolatba</h2>
+        <p class="section-sub reveal reveal-delay-2" style="margin-bottom:0">Kérdésed van? Írj nekünk és hamarosan visszajelzünk!</p>
+
+        <div class="contact-info-items">
+          <div class="contact-item reveal reveal-delay-1">
+            <div class="contact-item-icon">📧</div>
+            <div>
+              <strong>Email</strong>
+              <span>--</span>
+            </div>
+          </div>
+          <div class="contact-item reveal reveal-delay-2">
+            <div class="contact-item-icon">📞</div>
+            <div>
+              <strong>Telefon</strong>
+              <span>+36 xxxx (normál ügyintézés)</span>
+            </div>
+          </div>
+          <div class="contact-item reveal reveal-delay-3">
+            <div class="contact-item-icon">🏢</div>
+            <div>
+              <strong>Helyszín</strong>
+              <span>Budapest, Magyarország</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-wrap reveal reveal-delay-2">
+        <h3>Kapcsolatfelvételi Űrlap</h3>
+        <p>Általában 24 órán belül válaszolunk.</p>
+
+        <!-- Status Messages -->
+        <div id="statusMessage" class="status-message"></div>
+
+        <form id="contactForm">
+          <div class="form-group">
+            <label for="clientType">Ügyfél típusa:</label>
+            <select id="clientType" name="client_type" required>
+              <option value="">Válasszon...</option>
+              <option value="Céges ügyfél">Céges ügyfél</option>
+              <option value="Magánszemély">Magánszemély</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="name">Név / Cégnév *:</label>
+            <input type="text" id="name" name="from_name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Telefonszám *:</label>
+            <input type="tel" id="phone" name="phone" required>
+          </div>
+
+          <div class="form-group">
+            <label for="email">E-mail cím *:</label>
+            <input type="email" id="email" name="reply_to" required>
+          </div>
+
+          <div class="form-group">
+            <label for="service">Szolgáltatás típusa:</label>
+            <select id="service" name="service_type" onchange="toggleOtherServiceField()">
+              <option value="">Válasszon...</option>
+              <option value="Rendszerüzemeltetés">Rendszerüzemeltetés</option>
+              <option value="Webfejlesztés">Webfejlesztés</option>
+              <option value="Hálózatbiztonság">Hálózatbiztonság</option>
+              <option value="Technikai támogatás">Technikai támogatás</option>
+              <option value="other">Egyéb</option>
+            </select>
+          </div>
+
+          <div class="form-group" id="otherServiceGroup" style="display: none;">
+            <label for="otherService">Milyen szolgáltatást keres? *:</label>
+            <input type="text" id="otherService" name="other_service" placeholder="Írja le, milyen szolgáltatásra van szüksége...">
+          </div>
+
+          <div class="form-group">
+            <label for="message">Üzenet (opcionális):</label>
+            <textarea id="message" name="message" rows="5" placeholder="Írja le részletesen kérését, problémáját vagy kérdését..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <span id="submitText">Üzenet Küldése</span>
+            <span id="loadingText" style="display: none;">Küldés...</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal Overlay -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="close-x" onclick="closeModal()">&times;</button>
+    <div class="modal-header">
+      <div class="modal-icon" id="modalIcon">
+        <span id="modalIconContent">✓</span>
+        <div class="loading-spinner" id="loadingSpinner" style="display: none;"></div>
+      </div>
+      <h3 class="modal-title" id="modalTitle">Sikeres küldés!</h3>
+    </div>
+    <div class="modal-body">
+      <p id="modalMessage">Az üzenet sikeresen elküldve.</p>
+      <div class="modal-details" id="modalDetails" style="display: none;">
+        <h4>Küldött adatok:</h4>
+        <div id="modalDetailsContent"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-close-btn" onclick="closeModal()" id="modalCloseBtn">Rendben</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2024 <strong>BitNova IT Solutions</strong> — Minden jog fenntartva.</p>
+</footer>
+
+<script>
+// EmailJS inicializálás
+emailjs.init("JSUoigK_4Vq_ywznw");
+
+function toggleOtherServiceField() {
+    const serviceSelect = document.getElementById('service');
+    const otherServiceGroup = document.getElementById('otherServiceGroup');
+    const otherServiceInput = document.getElementById('otherService');
+    
+    if (serviceSelect.value === 'other') {
+        otherServiceGroup.style.display = 'block';
+        otherServiceInput.required = true;
+        otherServiceGroup.style.opacity = '0';
+        otherServiceGroup.style.transform = 'translateY(-10px)';
+        setTimeout(() => {
+            otherServiceGroup.style.transition = 'all 0.3s ease';
+            otherServiceGroup.style.opacity = '1';
+            otherServiceGroup.style.transform = 'translateY(0)';
+        }, 10);
+    } else {
+        otherServiceGroup.style.display = 'none';
+        otherServiceInput.required = false;
+        otherServiceInput.value = '';
+    }
+}
+
+function showStatus(message, type) {
+    const statusElement = document.getElementById('statusMessage');
+    statusElement.textContent = message;
+    statusElement.className = `status-message status-${type}`;
+    statusElement.style.display = 'block';
+    if (type !== 'loading') {
+        setTimeout(() => { statusElement.style.display = 'none'; }, 5000);
+    }
+}
+
+function showModal(title, message, type, details = null) {
+    const modal = document.getElementById('modalOverlay');
+    const modalIcon = document.getElementById('modalIcon');
+    const modalIconContent = document.getElementById('modalIconContent');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMessage = document.getElementById('modalMessage');
+    const modalDetails = document.getElementById('modalDetails');
+    const modalDetailsContent = document.getElementById('modalDetailsContent');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    
+    modalIcon.className = `modal-icon ${type}`;
+    
+    if (type === 'loading') {
+        modalIconContent.style.display = 'none';
+        loadingSpinner.style.display = 'block';
+        modalCloseBtn.style.display = 'none';
+    } else {
+        modalIconContent.style.display = 'block';
+        loadingSpinner.style.display = 'none';
+        modalCloseBtn.style.display = 'inline-block';
+        if (type === 'success') { modalIconContent.textContent = '✓'; }
+        else if (type === 'error') { modalIconContent.textContent = '✕'; }
+    }
+    
+    modalTitle.textContent = title;
+    modalMessage.textContent = message;
+    
+    if (details) {
+        modalDetailsContent.innerHTML = details;
+        modalDetails.style.display = 'block';
+    } else {
+        modalDetails.style.display = 'none';
+    }
+    
+    modal.classList.add('active');
+    modal.onclick = function(e) {
+        if (e.target === modal) { closeModal(); }
+    };
+}
+
+function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('active');
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { closeModal(); }
+});
+
+function setLoadingState(isLoading) {
+    const submitBtn = document.getElementById('submitBtn');
+    const submitText = document.getElementById('submitText');
+    const loadingText = document.getElementById('loadingText');
+    submitBtn.disabled = isLoading;
+    submitText.style.display = isLoading ? 'none' : 'inline';
+    loadingText.style.display = isLoading ? 'inline' : 'none';
+}
+
+document.getElementById('contactForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    showModal('Küldés folyamatban...', 'Kérjük, várjon, amíg az üzenet elküldésre kerül.', 'loading');
+    
+    const formData = new FormData(this);
+    const templateParams = {
+        from_name: formData.get('from_name'),
+        reply_to: formData.get('reply_to'),
+        phone: formData.get('phone'),
+        client_type: formData.get('client_type'),
+        service_type: formData.get('service_type') === 'other' ? 
+                     `Egyéb: ${formData.get('other_service')}` : 
+                     formData.get('service_type'),
+        message: formData.get('message') || 'Nincs külön üzenet',
+        to_email: 'technova.hu@gmail.com'
+    };
+    
+    const detailsHTML = `
+        <p><strong>Név:</strong> ${templateParams.from_name}</p>
+        <p><strong>Email:</strong> ${templateParams.reply_to}</p>
+        <p><strong>Telefon:</strong> ${templateParams.phone}</p>
+        <p><strong>Ügyfél típusa:</strong> ${templateParams.client_type}</p>
+        <p><strong>Szolgáltatás:</strong> ${templateParams.service_type}</p>
+        <p><strong>Üzenet:</strong> ${templateParams.message}</p>
+    `;
+    
+    emailjs.send('service_e4xq0s1', 'template_h2gag1d', templateParams)
+        .then(function(response) {
+            console.log('Email successfully sent!', response.status, response.text);
+            showModal(
+                'Sikeres küldés!', 
+                'Köszönjük megkeresését! Hamarosan felvesszük Önnel a kapcsolatot. Az üzenet részleteit alább láthatja.',
+                'success',
+                detailsHTML
+            );
+            document.getElementById('contactForm').reset();
+            document.getElementById('otherServiceGroup').style.display = 'none';
+            document.getElementById('otherService').required = false;
+        }, function(error) {
+            console.error('Email sending failed:', error);
+            showModal(
+                'Hiba történt!',
+                'Sajnos hiba történt az üzenet küldése során. Kérjük, próbálja újra később, vagy hívjon minket közvetlenül.',
+                'error'
+            );
+        });
+});
+
+// Scroll header shadow
+const header = document.getElementById('site-header');
+window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// Hamburger
+const hamburger = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobileNav');
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileNav.classList.toggle('open');
+});
+
+document.querySelectorAll('.mob-link').forEach(link => {
+    link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileNav.classList.remove('open');
+    });
+});
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) { entry.target.classList.add('visible'); }
+    });
+}, { threshold: 0.12 });
+reveals.forEach(el => observer.observe(el));
+
+// Active nav link on scroll
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('nav a[href^="#"]');
+window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(sec => {
+        if (window.scrollY >= sec.offsetTop - 100) current = sec.id;
+    });
+    navLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+});
+</script>
+</body>
+</html>
