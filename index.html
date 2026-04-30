@@ -423,6 +423,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
+    align-items: stretch;
   }
 
   .about-card {
@@ -436,8 +437,8 @@
     transform: translateY(-4px);
     box-shadow: var(--card-shadow-hover);
   }
-  .about-card:nth-child(2) { margin-top: 1.5rem; }
-  .about-card:nth-child(4) { margin-top: -1.5rem; }
+  .about-card:nth-child(2) { margin-top: 0; }
+  .about-card:nth-child(4) { margin-top: 0; }
 
   .about-card-icon {
     font-size: 1.6rem;
